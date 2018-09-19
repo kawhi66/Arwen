@@ -1,0 +1,24 @@
+{
+  "name": "simplified-light",
+  "version": "0.0.1",
+  "description": "simplified front-end engineering scaffold based on the lighting (https://www.npmjs.com/package/lighting) ",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kawhi66/simplified-light.git"
+  },
+  "keywords": [
+    "simplified-light",
+    "vue",
+    "light"
+  ],
+  "author": "https://kawhi.site",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kawhi66/simplified-light/issues"
+  },
+  "homepage": "https://github.com/kawhi66/simplified-light#readme"
+}
