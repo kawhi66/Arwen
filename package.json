@@ -2,7 +2,7 @@
   "name": "simplified-light",
   "version": "0.0.1",
   "description": "simplified front-end engineering scaffold based on the lighting (https://www.npmjs.com/package/lighting) ",
-  "main": "src/app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,5 +20,32 @@
   "bugs": {
     "url": "https://github.com/kawhi66/simplified-light/issues"
   },
-  "homepage": "https://github.com/kawhi66/simplified-light#readme"
+  "homepage": "https://github.com/kawhi66/simplified-light#readme",
+  "dependencies": {
+    "autoprefixer": "^9.1.5",
+    "babel-core": "^6.26.3",
+    "babel-loader": "7",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "chalk": "^2.4.1",
+    "cheerio": "^1.0.0-rc.2",
+    "css-loader": "^1.0.0",
+    "file-loader": "^2.0.0",
+    "fs-extra": "^7.0.0",
+    "glob": "^7.1.3",
+    "less": "^3.8.1",
+    "less-loader": "^4.1.0",
+    "lodash": "^4.17.11",
+    "olight": "^1.4.35",
+    "progress-bar-webpack-plugin": "^1.11.0",
+    "style-loader": "^0.23.0",
+    "vue": "^2.5.17",
+    "vue-loader": "^15.4.2",
+    "webpack": "^4.19.1",
+    "webpack-dev-middleware": "^3.3.0",
+    "webpack-hot-middleware": "^2.24.0",
+    "webpack-visualizer-plugin": "^0.1.11"
+  }
 }
