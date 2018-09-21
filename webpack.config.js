@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const babelOptions = {
     presets: [
         require('babel-preset-env'),
@@ -17,9 +18,14 @@ const babelOptions = {
 };
 
 module.exports = {
-    entry: './src/app.js',
+    entry: {
+        app: [
+            `${process.cwd()}/view/index.js`,
+            `${process.cwd()}/app.js`,
+        ]
+    },
     output: {
-        path: require('path').resolve('build'),
+        path: `${__dirname}/build`,
         chunkFilename: '[name].js?[chunkhash]',
         filename: '[name].js'
     },
@@ -46,11 +52,7 @@ module.exports = {
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
-                    postcss: [
-                        require('autoprefixer')({
-                            browsers: ['> 0.1%', 'ios >= 8', 'not ie < 12']
-                        })
-                    ]
+
                 }
             }
         ]
@@ -72,6 +74,7 @@ module.exports = {
             format: '  编译中 [:bar] ' + require("chalk").green.bold(':percent') + ' (:elapsed 秒)',
             clear: false
         }),
+        new VueLoaderPlugin(),
         new(require("./plugin/loader"))({
             babel: babelOptions
         }),

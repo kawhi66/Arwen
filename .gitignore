@@ -63,3 +63,5 @@ typings/
 
 # vs-code debug config
 .vscode
+
+tmp
