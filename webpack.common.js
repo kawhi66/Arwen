@@ -1,5 +1,9 @@
+const path = require('path');
+const fs = require('fs-extra');
 const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const babelOptions = {
     presets: [
         require('babel-preset-env'),
@@ -20,14 +24,14 @@ const babelOptions = {
 module.exports = {
     entry: {
         app: [
-            `${process.cwd()}/view/index.js`,
-            `${process.cwd()}/app.js`,
+            `${__dirname}/src/view/index.js`,
+            `${__dirname}/src/app.js`,
         ]
     },
     output: {
-        path: `${__dirname}/build`,
-        chunkFilename: '[name].js?[chunkhash]',
-        filename: '[name].js'
+        path: path.resolve(__dirname, 'build'),
+        filename: '[name].js',
+        publicPath: '/'
     },
     module: {
         rules: [{
@@ -52,7 +56,9 @@ module.exports = {
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
-
+                    loaders: {
+                        js: "babel-loader?presets=es2015"
+                    }
                 }
             }
         ]
@@ -63,6 +69,7 @@ module.exports = {
         alias: {
             "light": `olight/dist/olight.js`,
             'vue': "vue/dist/vue.esm",
+            // 'vue$': 'vue/dist/vue.js',
             "@": "src"
         }
     },
@@ -70,19 +77,17 @@ module.exports = {
         modules: [`${__dirname}/node_modules`, "lib/node_modules", "lib", "node_modules"]
     },
     plugins: [
-        new require('progress-bar-webpack-plugin')({
-            format: '  编译中 [:bar] ' + require("chalk").green.bold(':percent') + ' (:elapsed 秒)',
-            clear: false
+        new CleanWebpackPlugin('build'),
+        new HtmlWebpackPlugin({
+            templateContent: function () {
+                const $ = require("cheerio").load(fs.readFileSync('./public/index.html'));
+
+                $("view").first().replaceWith("<router-view></router-view>");
+                $("view").remove();
+
+                return $.html()
+            }
         }),
-        new VueLoaderPlugin(),
-        new(require("./plugin/loader"))({
-            babel: babelOptions
-        }),
-        new webpack.HotModuleReplacementPlugin({
-            multiStep: false,
-        }),
-        new webpack.NoEmitOnErrorsPlugin()
-    ],
-    devtool: 'source-map',
-    mode: 'development'
+        new VueLoaderPlugin()
+    ]
 }

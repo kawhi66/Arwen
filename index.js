@@ -1,2 +1,2 @@
 // require('./task/gen');
-require('./task/release');
+require('./task/release0');
