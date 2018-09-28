@@ -7,7 +7,9 @@
 <script>
     export default {
         data(){
-            return {}
+            return {
+                index: 1234
+            }
         }
     }
 </script>
