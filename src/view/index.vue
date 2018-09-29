@@ -1,14 +1,15 @@
 
 <template>
     <div>
-       Hello,World !
+       <p style="font-size: 1rem;line-height:1em;">{{content}}</p>
+       <sub-view></sub-view>
     </div>
 </template>
 <script>
     export default {
         data(){
             return {
-                index: 1234
+                content: 'this is index vue'
             }
         }
     }

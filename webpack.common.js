@@ -87,7 +87,7 @@ module.exports = {
                 return $.html()
             }
         }),
-        new (require("./plugin/loader"))({
+        new (require("./task/plugin/loader"))({
             babel: babelOptions
         })
     ]
