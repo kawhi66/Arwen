@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 const webpack = require('webpack');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+// const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const babelOptions = {
@@ -69,7 +69,6 @@ module.exports = {
         alias: {
             "light": `olight/dist/olight.js`,
             'vue': "vue/dist/vue.esm",
-            // 'vue$': 'vue/dist/vue.js',
             "@": "src"
         }
     },
@@ -88,6 +87,8 @@ module.exports = {
                 return $.html()
             }
         }),
-        new VueLoaderPlugin()
+        new (require("./plugin/loader"))({
+            babel: babelOptions
+        })
     ]
 }
