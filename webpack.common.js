@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs-extra');
 const webpack = require('webpack');
-// const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const babelOptions = {
@@ -24,7 +23,7 @@ const babelOptions = {
 module.exports = {
     entry: {
         app: [
-            `${__dirname}/src/view/index.js`,
+            `${__dirname}/src/view/view.autogeneration.js`,
             `${__dirname}/src/app.js`,
         ]
     },
@@ -78,6 +77,15 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin('build'),
         new HtmlWebpackPlugin({
+            meta: {
+                charset: 'utf-8',
+                viewport: 'width=device-width, initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no',
+                Keywords: '',
+                description: '',
+                'apple-mobile-web-app-capable': 'yes',
+                'apple-mobile-web-app-status-bar-style': 'black',
+                'format-detection': 'telephone=no,email=no'
+            },
             templateContent: function () {
                 const $ = require("cheerio").load(fs.readFileSync('./public/index.html'));
 
@@ -87,7 +95,7 @@ module.exports = {
                 return $.html()
             }
         }),
-        new (require("./task/plugin/loader"))({
+        new(require("./task/plugin/loader"))({
             babel: babelOptions
         })
     ]

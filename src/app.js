@@ -1,5 +1,4 @@
-import App from "light";
-console.log(App);
+import App from "light"
 
 require("./lib/px2rem");
 require("./app.less");
