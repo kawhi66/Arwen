@@ -10,8 +10,25 @@ let views = [];
 $('view').each(function (i, unit) {
     const viewComponent = `./src/view/${unit.attribs.id}.vue`;
 
+    /* 根据模本自动生成缺失的 vue 文件 */
     if (!fs.existsSync(viewComponent)) {
-        fs.outputFileSync(viewComponent, require('./lib/template')(unit.attribs));
+        fs.outputFileSync(viewComponent, require('lodash').template(`
+        <template>
+            <div>
+               Hello,World !
+            </div>
+        </template>
+        <script>
+            export default {
+                data(){
+                    return {}
+                }
+            }
+        </script>
+        <style lang="less">
+        
+        </style>
+        `)(unit.attribs));
     }
 
     views.push(unit.attribs);

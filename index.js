@@ -1,2 +1,3 @@
-// require('./task/gen');
-require('./task/release0');
+module.exports = function (argv) {
+    require('./task/release');
+}
