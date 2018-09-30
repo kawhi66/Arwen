@@ -1,5 +1,5 @@
 {
-  "name": "simplified-light",
+  "name": "arwen",
   "version": "0.0.1",
   "description": "simplified front-end engineering scaffold based on the lighting (https://www.npmjs.com/package/lighting) ",
   "main": "index.js",
@@ -11,9 +11,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kawhi66/simplified-light.git"
+    "url": "git+https://github.com/kawhi66/arwen.git"
   },
   "keywords": [
+    "arwen",
     "simplified-light",
     "vue",
     "light"
@@ -21,9 +22,9 @@
   "author": "https://kawhi.site",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kawhi66/simplified-light/issues"
+    "url": "https://github.com/kawhi66/arwen.git/issues"
   },
-  "homepage": "https://github.com/kawhi66/simplified-light#readme",
+  "homepage": "https://github.com/kawhi66/arwen.git#readme",
   "dependencies": {
     "autoprefixer": "^9.1.5",
     "babel-core": "^6.26.3",
