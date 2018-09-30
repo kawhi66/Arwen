@@ -11,11 +11,6 @@ exports.builder = {
         describe: 'specify the project name of generate',
         type: 'string'
     },
-    // list: {
-    //     alias: 'l',
-    //     describe: 'list all supported build type',
-    //     type: 'boolean'
-    // },
     type: {
         alias: 't',
         default: 'vue',
@@ -24,15 +19,6 @@ exports.builder = {
     }
 };
 exports.handler = function (argv) {
-    // if (argv.list) {
-    //     console.log(`\nsupported template types: \n`);
-    //     console.log('   vue: vue project based on the olight frame');
-    //     // console.log('   react:  react project based on the react-scripts');
-    //     // console.log('   jquery: jquery project based on the zepto');
-
-    //     process.exit(0);
-    // };
-
     const src = path.resolve(__dirname, '..', 'template', argv.type);
     const dest = path.join(process.cwd(), argv.name)
 
