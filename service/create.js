@@ -3,7 +3,7 @@ const path = require('path');
 const shell = require('shelljs');
 
 exports.command = 'create [name] [options]';
-exports.describe = 'generation';
+exports.describe = 'generate the project based on template';
 exports.builder = {
     name: {
         alias: 'n',
@@ -20,7 +20,7 @@ exports.builder = {
 };
 exports.handler = function (argv) {
     const src = path.resolve(__dirname, '..', 'template', argv.type);
-    const dest = path.join(process.cwd(), argv.name)
+    const dest = path.join(process.cwd(), argv.name);
 
     fs.copy(src, dest, {
         overwrite: false,
