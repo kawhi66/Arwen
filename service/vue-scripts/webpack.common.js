@@ -20,15 +20,19 @@ const babelOptions = {
     // cacheDirectory:require("path").join(require("os").tmpdir(),'LIGHTING_WEBPACK_CACHE')
 };
 
+function resolvePath(route) {
+    return path.resolve(process.cwd(), route)
+}
+
 module.exports = {
     entry: {
         app: [
-            `${__dirname}/src/view/view.autogeneration.js`,
-            `${__dirname}/src/app.js`,
+            resolvePath('./src/view/view.autogeneration.js'),
+            resolvePath('./src/app.js'),
         ]
     },
     output: {
-        path: path.resolve(__dirname, 'build'),
+        path: resolvePath('./build'),
         filename: '[name].js',
         publicPath: '/'
     },
@@ -64,7 +68,7 @@ module.exports = {
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],
-        modules: [`${__dirname}/node_modules`, "lib/node_modules", "lib", "node_modules"],
+        modules: [path.resolve(`${__dirname}`, '../../node_modules'), "node_modules"],
         alias: {
             "light": `olight/dist/olight.js`,
             'vue': "vue/dist/vue.esm",
@@ -72,10 +76,12 @@ module.exports = {
         }
     },
     resolveLoader: {
-        modules: [`${__dirname}/node_modules`, "lib/node_modules", "lib", "node_modules"]
+        modules: [path.resolve(`${__dirname}`, '../../node_modules'), "node_modules"]
     },
     plugins: [
-        new CleanWebpackPlugin('build'),
+        new CleanWebpackPlugin('build', {
+            root: process.cwd()
+        }),
         new HtmlWebpackPlugin({
             meta: {
                 charset: 'utf-8',
@@ -87,7 +93,7 @@ module.exports = {
                 'format-detection': 'telephone=no,email=no'
             },
             templateContent: function () {
-                const $ = require("cheerio").load(fs.readFileSync('./public/index.html'));
+                const $ = require("cheerio").load(fs.readFileSync(resolvePath('./public/index.html')));
 
                 $("view").first().replaceWith("<router-view></router-view>");
                 $("view").remove();
@@ -95,7 +101,7 @@ module.exports = {
                 return $.html()
             }
         }),
-        new(require("./task/plugin/loader"))({
+        new(require("./plugin/loader"))({
             babel: babelOptions
         })
     ]

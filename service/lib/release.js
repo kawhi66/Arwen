@@ -2,13 +2,17 @@ const webpack = require('webpack');
 const fs = require('fs-extra');
 const path = require('path');
 
+function resolvePath(route) {
+    return path.resolve(process.cwd(), route)
+}
+
 /* view.autogeneration.js 暂时不知道该怎么处理 */
 /* -------------------------------------------------------------------------------------------------------------------------------------------- */
-const $ = require("cheerio").load(fs.readFileSync('./public/index.html'));
+const $ = require("cheerio").load(fs.readFileSync(resolvePath('./public/index.html')));
 let views = [];
 
 $('view').each(function (i, unit) {
-    const viewComponent = `./src/view/${unit.attribs.id}.vue`;
+    const viewComponent = resolvePath(`./src/view/${unit.attribs.id}.vue`);
 
     /* 根据模本自动生成缺失的 vue 文件 */
     if (!fs.existsSync(viewComponent)) {
@@ -34,7 +38,7 @@ $('view').each(function (i, unit) {
     views.push(unit.attribs);
 });
 
-fs.writeFileSync(path.join(process.cwd(), 'src', 'view', 'view.autogeneration.js'), require('lodash').template(`
+fs.writeFileSync(resolvePath('./src/view/view.autogeneration.js'), require('lodash').template(`
 import __VUE__ from "vue";
 import __LIGHT__ from "light";
 __VUE__.use(__LIGHT__);
@@ -52,23 +56,13 @@ __LIGHT__
 }));
 /* -------------------------------------------------------------------------------------------------------------------------------------------- */
 
-/* 编译 */
-// development
-let compiler = webpack(require('../webpack.dev'), (err, stats) => {
+/* 编译, 生产环境和开发环境 */
+let webpackConfig = require(process.env.ARWEN_ENV == 'development' ? '../vue-scripts/webpack.dev' : '../vue-scripts/webpack.prod');
+let compiler = webpack(webpackConfig, (err, stats) => {
     if (err || stats.hasErrors()) {
         console.log(err || stats.toString())
     };
 
     const instance = require("webpack-dev-middleware")(compiler);
-    require('./lib/browser')(instance);
+    process.env.ARWEN_ENV == 'development' ? require('./browser')(instance) : instance.waitUntilValid(() => instance.close());
 });
-
-// production
-// let compiler = webpack(require('../webpack.prod'), (err, stats) => {
-//     if (err || stats.hasErrors()) {
-//         console.log(err || stats.toString())
-//     };
-
-//     const instance = require("webpack-dev-middleware")(compiler);
-//     instance.waitUntilValid(() => instance.close());
-// });
