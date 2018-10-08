@@ -13,7 +13,7 @@ exports.handler = function (argv) {
         };
 
         process.env.ARWEN_ENV = 'production';
-        process.env.ARWEN_TYPE = require('./package.json').ARWEN_TYPE;
+        process.env.ARWEN_TYPE = require(path.resolve(process.cwd(), './package.json')).ARWEN_TYPE;
         require('./lib/release');
     });
 }

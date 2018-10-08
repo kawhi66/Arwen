@@ -20,7 +20,7 @@ exports.handler = function (argv) {
         };
 
         process.env.ARWEN_ENV = 'development';
-        process.env.ARWEN_TYPE = require('./package.json').ARWEN_TYPE;
+        process.env.ARWEN_TYPE = require(path.resolve(process.cwd(), './package.json')).ARWEN_TYPE;
         process.env.ARWEN_PORT = argv.port;
         require('./lib/release');
     });
