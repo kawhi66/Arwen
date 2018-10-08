@@ -1,16 +1,20 @@
 {
-  "name": "simplified-light",
+  "name": "arwen",
   "version": "0.0.1",
   "description": "simplified front-end engineering scaffold based on the lighting (https://www.npmjs.com/package/lighting) ",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "arwen": "./bin/arwen"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kawhi66/simplified-light.git"
+    "url": "git+https://github.com/kawhi66/arwen.git"
   },
   "keywords": [
+    "arwen",
     "simplified-light",
     "vue",
     "light"
@@ -18,9 +22,9 @@
   "author": "https://kawhi.site",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kawhi66/simplified-light/issues"
+    "url": "https://github.com/kawhi66/arwen.git/issues"
   },
-  "homepage": "https://github.com/kawhi66/simplified-light#readme",
+  "homepage": "https://github.com/kawhi66/arwen.git#readme",
   "dependencies": {
     "autoprefixer": "^9.1.5",
     "babel-core": "^6.26.3",
@@ -40,6 +44,7 @@
     "lodash": "^4.17.11",
     "olight": "^1.4.35",
     "progress-bar-webpack-plugin": "^1.11.0",
+    "shelljs": "^0.8.2",
     "style-loader": "^0.23.0",
     "vue": "^2.5.17",
     "vue-router": "^2.1.1",
@@ -55,6 +60,7 @@
     "webpack": "^3.11.0",
     "webpack-dev-middleware": "^2.0.2",
     "webpack-hot-middleware": "^2.18.0",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "yargs": "^12.0.2"
   }
 }
