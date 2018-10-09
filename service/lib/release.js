@@ -1,10 +1,13 @@
-const webpack = require('webpack');
+const ARWEN_ENV = process.env.ARWEN_ENV;
+const ARWEN_TYPE = process.env.ARWEN_TYPE;
+const ARWEN_PORT = process.env.ARWEN_PORT;
 const fs = require('fs-extra');
 const path = require('path');
 const shell = require('shelljs');
-const ARWEN_ENV = process.env.ARWEN_ENV;
-const ARWEN_TYPE = process.env.ARWEN_TYPE;
+const webpack = require('webpack');
+const webpackDevServer = require('webpack-dev-server');
 const webpackConfig = require(path.resolve(__dirname, `../${ARWEN_TYPE}-scripts`, ARWEN_ENV == 'development' ? 'webpack.dev' : 'webpack.prod'));
+// console.log(webpackConfig);
 
 ARWEN_TYPE === 'vue' && autoGenerate();
 
@@ -15,11 +18,26 @@ let compiler = webpack(webpackConfig, (err, stats) => {
         shell.exit(1);
     };
 
-    // 这里能不能直接对外暴露 ？
-    const instance = require("webpack-dev-middleware")(compiler);
+    // 这里不能直接对外暴露 ？
+    // const instance = require("webpack-dev-middleware")(compiler);
 
     if (ARWEN_ENV == 'development') {
-        require('./browser')(instance)
+        // require('./browser')(instance)
+
+        const options = {
+            contentBase: resolvePath('build'),
+            watchContentBase: true,
+            hot: true,
+            open: true,
+            host: "localhost",
+            port: ARWEN_PORT
+        };
+
+        webpackDevServer.addDevServerEntrypoints(webpackConfig, options);
+        const server = new webpackDevServer(compiler, options);
+        server.listen(ARWEN_PORT, 'localhost', () => {
+            console.log(`dev server listening on port ${ARWEN_PORT}`);
+        });
     } else if (ARWEN_ENV == 'production') {
         instance.waitUntilValid(() => {
             instance.close();
@@ -45,41 +63,44 @@ function autoGenerate() {
         /* 根据模本自动生成缺失的 vue 文件 */
         if (!fs.existsSync(viewComponent)) {
             fs.outputFileSync(viewComponent, require('lodash').template(`
-        <template>
-            <div>
-               Hello,World !
-            </div>
-        </template>
-        <script>
-            export default {
-                data(){
-                    return {}
-                }
-            }
-        </script>
-        <style lang="less">
-        
-        </style>
-        `)(unit.attribs));
+<template>
+    <div>
+        Hello,World !
+    </div>
+</template>
+<script>
+    export default {
+        data(){
+            return {}
         }
+    }
+</script>
+<style lang="less">
+
+</style>`)(unit.attribs))
+        };
 
         views.push(unit.attribs);
     });
 
     fs.writeFileSync(resolvePath('./src/view/view.autogeneration.js'), require('lodash').template(`
-    import __VUE__ from "vue";
-    import __LIGHT__ from "light";
-    __VUE__.use(__LIGHT__);
-    __LIGHT__
-    <%views.forEach(function(view){%>
-        .route({
-            path: '/<%=view.id%>',
-            <%if(view.async=="true"){%>component: ()=>{return import("./<%=view.id%>.vue")},<%}%>
-            <%if(!view.async||view.async=="false"){%>component: require("./<%=view.id%>.vue"),<%}%>
-            <%if(view.parent){%>parent:"/<%=view.parent%>",<%}%>
-            <%if(view.home){%>home:"/<%=view.home%>",<%}%>
-        })
-    <%})%>`)({
+/******************************************************************************************************************************************************
+ ************************ this script generate automatically, please do not modify. it looks guly and unreasonable, i know, i am working on it! ************************
+ ******************************************************************************************************************************************************/
+
+import __VUE__ from "vue";
+import __LIGHT__ from "light";
+__VUE__.use(__LIGHT__);
+__LIGHT__
+<%views.forEach(function(view){%>
+    .route({
+        path: '/<%=view.id%>',
+        <%if(view.async=="true"){%>component: ()=>{return import("./<%=view.id%>.vue")},<%}%>
+        <%if(!view.async||view.async=="false"){%>component: require("./<%=view.id%>.vue"),<%}%>
+        <%if(view.parent){%>parent:"/<%=view.parent%>",<%}%>
+        <%if(view.home){%>home:"/<%=view.home%>",<%}%>
+    })
+<%})%>`)({
         views
     }));
     /* -------------------------------------------------------------------------------------------------------------------------------------------- */

@@ -1,8 +1,8 @@
 const path = require('path');
 const fs = require('fs-extra');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const babelOptions = {
     presets: [
         require('babel-preset-env'),
@@ -59,9 +59,10 @@ module.exports = {
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
-                    loaders: {
-                        js: "babel-loader?presets=es2015"
-                    }
+                    // esModule: false
+                    // loaders: {
+                    //     js: "babel-loader?presets=es2015"
+                    // }
                 }
             }
         ]
@@ -71,7 +72,7 @@ module.exports = {
         modules: [path.resolve(`${__dirname}`, '../../node_modules'), "node_modules"],
         alias: {
             "light": `olight/dist/olight.js`,
-            'vue': "vue/dist/vue.esm",
+            'vue$': "vue/dist/vue.esm",
             "@": "src"
         }
     },
@@ -101,8 +102,9 @@ module.exports = {
                 return $.html()
             }
         }),
-        new(require("./plugin/loader"))({
-            babel: babelOptions
-        })
+        new VueLoaderPlugin(),
+        // new(require("./plugin/loader"))({
+        //     babel: babelOptions
+        // })
     ]
 }
