@@ -16,7 +16,7 @@ module.exports = function (middleware) {
 
     // if (options.browser){
         let app = express();
-        let port = 3000;
+        let port = process.env.ARWEN_PORT;
 
         let sockets = [];
         wss.on('connection', function (socket) {
