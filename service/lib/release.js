@@ -85,18 +85,24 @@ function autoGenerate() {
 
     fs.writeFileSync(resolvePath('./src/view/view.autogeneration.js'), require('lodash').template(`
 /******************************************************************************************************************************************************
- ************************ this script generate automatically, please do not modify. it looks guly and unreasonable, i know, i am working on it! ************************
+ ************************ this script generate automatically, please do not modify. it looks guly and unreasonable, i know, i am working on it! *******
  ******************************************************************************************************************************************************/
+
+/**
+ * sync views has to be require().default.
+ * see https://forum.vuejs.org/t/solved-using-standalone-version-but-getting-failed-to-mount-component-template-or-render-function-not-defined/19569
+ */
 
 import __VUE__ from "vue";
 import __LIGHT__ from "light";
 __VUE__.use(__LIGHT__);
+
 __LIGHT__
 <%views.forEach(function(view){%>
     .route({
         path: '/<%=view.id%>',
-        <%if(view.async=="true"){%>component: ()=>{return import("./<%=view.id%>.vue")},<%}%>
-        <%if(!view.async||view.async=="false"){%>component: require("./<%=view.id%>.vue"),<%}%>
+        <%if(view.async=="true"){%>component: () => import("./<%=view.id%>.vue"),<%}%>
+        <%if(!view.async||view.async=="false"){%>component: require("./<%=view.id%>.vue").default,<%}%>
         <%if(view.parent){%>parent:"/<%=view.parent%>",<%}%>
         <%if(view.home){%>home:"/<%=view.home%>",<%}%>
     })
