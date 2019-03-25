@@ -1,0 +1,11 @@
+{
+    "dependencies": {
+        "echarts": "^4.0.4",
+        "echarts-amap": "^1.0.0-rc.6"
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not ie <= 8"
+    ]
+}

@@ -1,0 +1,65 @@
+  .h-datagrid-title {
+    padding: 5px 10px 4px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom: 1px solid transparent;
+    color: #fff;
+    background: #515A71;
+    h4 {
+      margin: 0;
+      line-height: 20px;
+    }
+  }
+  .h-datagrid-toolbar {
+    padding: 5px 10px;
+    border: solid #d7dde4;
+    border-width: 1px 1px 0;
+    .h-btn {
+      padding: 3px 15px;
+      > .h-icon + span,
+      > span + .h-icon{
+        font-size: 14px;
+        color: #666;
+        margin-left: 0;
+      }
+      .iconfont {
+        font-size: 16px;
+        color: #000;
+      }
+      &.h-btn-disable > .h-icon + span,
+      &.h-btn-disable > span + .h-icon,
+      &.h-btn-disable > .iconfont {
+        color: inherit;
+      }
+    }
+  }
+  .h-datagrid .h-table-small td {
+    height: 30px;
+  }
+  .h-datagrid .h-select-item {
+    padding: 3px 16px;
+  }
+  .h-datagrid .h-page {
+    margin: 5px;
+    .h-page-prev,
+    .h-page-next,
+    .h-page-item-jump-prev,
+    .h-page-item-jump-next,
+    .h-page-item,
+    .h-page-options-elevator input {
+      height: 26px;
+      line-height: 24px;
+      min-width: 24px;
+    }
+    .h-select-single {
+      .h-select-selection {
+        height: 28px;
+        line-height: 26px;
+        .h-select-placeholder,
+        .h-select-selected-value {
+          height: 28px;
+          line-height: 26px;
+        }
+      }
+    }
+  }

@@ -1,0 +1,78 @@
+body {
+  background: $body-color;
+}
+#app {
+  font-family: $font-family;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+.app-wrapper {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.main-wrapper {
+  margin: $topbar-base-height + $navbar-base-height 0 0 $sidebar-base-width;
+  background: $body-color;
+}
+.hideSidebar.main-wrapper {
+  margin: $topbar-base-height + $navbar-base-height 0 0 $sidebar-collapse-width;
+}
+.fullScreen.main-wrapper {
+  margin: 0;
+}
+// 首页
+// .isMainIndex.main-wrapper,
+// .isMainIndex.hideSidebar.main-wrapper{
+//   margin-left: 0;
+// }
+.app-main{
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  padding: 10px 5px 0;
+  text-align: left;
+  background: $base-color;
+  position: relative;
+  top: 5px;
+
+  // ::-webkit-scrollbar {
+  //   width: static;
+  //   height: static;
+  //   background-color: static;
+  // }
+  // ::-webkit-scrollbar-track{
+  //   -webkit-box-shadow: static;
+  //   background-color: static;
+  // }
+  // ::-webkit-scrollbar-thumb{
+  //   border-radius: static;
+  //   background: static;
+  // }
+}
+
+// :-webkit-full-screen {
+//   background: $body-color; 
+// }
+// html {
+//   ::-webkit-scrollbar {
+//     width: 10px;
+//     height: 10px;
+//     background-color: $scrollbar-body-bgcolor;
+//   }
+//   ::-webkit-scrollbar-track{
+//     -webkit-box-shadow: inset 0 0 6px $scrollbar-color;
+//     background-color: $scrollbar-body-bgcolor;
+//   }
+//   ::-webkit-scrollbar-thumb{
+//     border-radius: 8px;
+//     background: $scrollbar-body-color;
+//   }
+// }
+
+.h-btn,
+.h-btn .iconfont {
+  font-size: 13px;
+}

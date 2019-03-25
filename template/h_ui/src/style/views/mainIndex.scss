@@ -1,0 +1,68 @@
+.clearfix:after {
+  display: block;
+  content: "";
+  clear: both;
+  visibility: hidden;
+  height: 0;
+}
+.clearfix {
+  zoom: 1;
+}
+.disInlineBlock {
+  display: inline-block;
+}
+.isMainIndex .app-main {
+  background: transparent;
+}
+.title {
+  padding: 15px 0;
+  span {
+    font-size: 18px;
+  }
+  h3 {
+    margin: 0 5px;
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 600;
+  }
+}
+.h-panel .h-panel-header {
+  background: #fff;
+  color: #555;
+}
+.demo1 .h-panel-content {
+  background: #2DB6EA;
+  color: #fff;
+}
+.demo2 .h-panel-content {
+  background: #45C97F;
+  color: #fff;
+}
+.demo3 .h-panel-content {
+  background: #609CEB;
+  color: #fff;
+}
+.demo4 .nav{
+  display: inline-block; 
+  margin-left: 3px;
+  vertical-align: middle;
+  font-size: 14px;
+}
+.demo4 .create{
+  display: block;
+  font-weight: 600;
+  padding-left: 5px;
+}
+.demo5 .create i{
+  color: #555;
+}
+.demo5 .list {
+  margin-top: -10px;
+  display: block;
+  padding: 0 7px;
+}
+.demo5 .list li {
+  display: block;
+  padding: 8px 0;
+  line-height: 1;
+}

@@ -1,0 +1,120 @@
+/*
+ * Template Name: HUIFrame
+ * Version: 0.0.1
+ * Author: Anona Wang
+ * Email: wangyn18853@hundsun.com
+ *
+ * 1.0 $base
+ * 2.0 $sidebar
+ * 3.0 $topbar
+ * 4.0 $navbar
+ * 5.0 $login
+ *        
+ */
+/* 1.0 $base */
+$css-prefix: h-;
+$css-prefix-iconfont: font-icon;
+
+$base-color: #fff;
+$body-color: #f0f2f5;
+$scrollbar-body-bgcolor: #F5F5F5;
+$scrollbar-body-color: #2B3643;
+$scrollbar-bgcolor: transparent;
+$scrollbar-color: rgba(123,129,144,1);
+
+$base-border: 1px solid #000;
+
+$font-family: Arial, Microsoft Yahei, sans-serif, Verdana;
+$s-font-size: 14px;
+$bold-font: 700;
+$normal-font: 400;
+
+
+/* 2.0 $sidebar */
+$sidebar-base-width: 256px;
+$sidebar-collapse-width: 80px;
+
+$sidebar-head-height: 64px;
+$sidebar-menu-lineheight: 32px;
+
+$sidebar-menu-padding1: 9px 30px 9px 20px;
+$sidebar-menu-padding2: 9px 20px 9px 30px;
+$sidebar-menu-padding3title: 9px 30px 9px 30px;
+$sidebar-menu-padding3: 9px 30px 9px 50px;
+
+$sidebar-search-marTop: -4px;
+
+$sidebar-hide-bgcolor: #374250;
+$sidebar-head-bgcolor: #002140;
+$sidebar-bgcolor: transparent;
+$sidebar-bgcolor-liner: #001529;
+$sidebar-webkit-bgcolor-liner: #001529;
+$sidebar-submenu-bgcolor: #000c17;
+// $sidebar-color: #CBCFD5;
+$sidebar-color: rgba(255, 255, 255, 0.666667);
+$sidebar-search-color: $base-color;
+// $sidebar-select-color: #374250;
+$sidebar-select-color: transparent;
+$sidebar-hover-bgcolor: #4A94FA;
+
+$sidebar-head-fonsize: 20px;
+$sidebar-l-fonsize: 14px;
+$sidebar-m-fonsize: 14px;
+
+$sidebar-head-fontweight: 600;
+
+$sidebar-search-opacity: 1;
+/* 3.0 $topbar */
+$topbar-base-height: $sidebar-head-height;
+$topbar-line-height: 0;
+
+$topbar-bgcolor: #fff;
+$topbar-color: rgba(0,0,0,.65);
+$topbar-fenge-color: darken($base-color, 40%);
+$topbar-hover-bgcolor: #3E4C5C;
+$topbar-active-bgcolor: #485566;
+$topbar-active-color: #4A94FA;
+$topbar-selectdown-bgcolor: $base-color;
+$topbar-selectdown-color: #657180;
+$topbar-selectdown-hover-bgcolor: #4A94FA;
+
+$topbar-nav-padding: 0 10px;
+$topbar-tool-padding: 0 10px;
+
+$topbar-shadow-color: rgba(0,21,41,.08);
+$topbar-shadow: 0 1px 4px  $topbar-shadow-color;
+
+$topbar-l-fonsize: 18px;
+$topbar-m-fonsize: 15px;
+$topbar-fontweight: $bold-font;
+
+$topbar-search-padding: 9px 20px 9px 10px;
+$topbar-search-width: 150px;
+
+/* 4.0 $navbar */
+$navbar-base-height: 50px;
+$navbar-tag-height: 38px;
+$navbar-tag-lineheight: 30px;
+
+$navbar-wrap-padding: 14px 0px 14px 25px;
+$navbar-tag-padding: 4px 5px;
+
+$navbar-bgcolor: $base-color;
+$navbar-color: #171B26;
+$navbar-tag-hover-bgcolor: #4A94FA;
+
+$navbar-tag-close-right: 4px;
+$navbar-tag-close-top: 4px;
+
+$navbar-tag-close-tip-height: 100px;
+$navbar-tag-close-tip-width: 148px;
+$navbar-tag-close-tip-padding: 2px 0;
+$navbar-tag-close-tip-bgcolor: $base-color;
+$navbar-tag-close-tip-item-height: 32px;
+$navbar-tag-close-tip-item-hover-bgcolor: #4A94FA;
+$navbar-tag-close-tip-item-hover-color: $base-color;
+
+$navbar-l-fonsize: 14px;
+$navbar-m-fonsize: 13px;
+/* 5.0 $login */
+$loin-bgcolor: #16191E;
