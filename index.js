@@ -4,7 +4,7 @@ const opts = yargs
     .strict()
     .usage('Usage: arwen [command] [options]')
     .command(require('./service/create'))
-    .command(require('./service/list'))
+    // .command(require('./service/list'))
     .command(require('./service/serve'))
     .command(require('./service/build'))
     .alias('h', 'help')

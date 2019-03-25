@@ -22,12 +22,14 @@ exports.handler = function(argv) {
     const src = path.resolve(__dirname, '..', 'template', argv.type);
     const dest = path.join(process.cwd(), argv.name);
 
+    // set ARWEN_TYPE
+    // process.env.ARWEN_TYPE = argv.type;
+
     /**
      * copy the template to the dest dir
      * merge template-defined package.json before createing one
      *
      * todo README.md ?
-     * todo ARWEN_TYPE ? is that necessary ?
      */
     fs.copy(src, dest).then(() => {
         return fs.readJson(path.resolve(src, 'package.json'))
@@ -35,11 +37,12 @@ exports.handler = function(argv) {
         return fs.writeJson(path.resolve(dest, 'package.json'), Object.assign({
             name: argv.name,
             description: "an arwen project",
-            version: "1.0.0"
+            version: "1.0.0",
+            arwen_type: argv.type
         }, result), {
             spaces: '\t'
         })
     }).catch(err => {
-        console.error(err)
+        console.error('[error]: ', require('util').inspect(err))
     })
 }
