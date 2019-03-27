@@ -1,0 +1,16 @@
+{
+    "name": "arwen-cli",
+    "version": "1.0.0",
+    "description": "arwen-cli",
+    "main": "index.js",
+    "bin": {
+        "arwen": "./bin/arwen"
+    },
+    "repository": "https://github.com/kawhi66/arwen",
+    "author": "kawhi.site",
+    "license": "MIT",
+    "dependencies": {
+        "fs-extra": "^7.0.1",
+        "yargs": "^13.2.2"
+    }
+}
