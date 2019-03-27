@@ -1,0 +1,165 @@
+$tb-prefix-cls: "#{$css-prefix}topbar";
+$tbWrap-prefix-cls: "#{$tb-prefix-cls}-wrapper";
+
+.#{$tbWrap-prefix-cls} {
+  width: 100%;
+  height: $topbar-base-height;
+  padding: 0;
+  position: fixed; 
+  top: 0;
+  left: 0;
+  padding-left: $sidebar-base-width;  
+  z-index: 2;
+  border: none;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-box-shadow: $topbar-shadow;
+  box-shadow: $topbar-shadow;
+  background: $topbar-bgcolor;
+  @include user-select();
+}
+.hideSidebar .#{$tb-prefix-cls} .#{$tb-prefix-cls}-expandIcon  .#{$tb-prefix-cls}-expandIcon-img{
+  background: url('../assets/unfold.png') 0px 0px no-repeat;
+}
+.#{$tb-prefix-cls} {
+  /* logo */
+  &-expandIcon {
+    display: inline-block;
+    line-height: $topbar-base-height;
+    float: left;
+    transition: all .3s,padding 0s;
+    padding: 7px 24px;
+    &-img {
+      display:  inline-block;
+      height: 20px;
+      width: 20px;
+      background: url('../assets/fold.png') 0px 0px no-repeat;
+    }
+  }
+  /* nav */
+
+ /* toolbar */
+  &-tool {
+    // float: right;
+    position: absolute;
+    right: 0;
+    .h-topbar-search.h-menu-item {
+      display: inline-block;
+      width: 150px;
+      margin-left: -20px!important;
+      &:hover {
+        background: none!important;
+      }
+      .h-select {
+        vertical-align: top;
+        margin-top: 13px;
+      }
+      .h-select-item {
+        text-align: left;
+        font-size: 14px;
+        &:hover {
+          background: #e6f7ff;
+          color: rgba(0,0,0,.65)
+        }
+      }
+      .h-select-placeholder {
+        font-size: 14px;
+        padding-left: 2px;
+      }
+      .h-select-selection {
+        border: none;
+        border-bottom: 1px solid #d7dde4;
+      }
+      .h-select-selection{
+        box-shadow: none !important;
+        background: transparent;
+      }
+      .h-select-input, .h-select-content-input {
+        font-size: 14px;
+        padding-left: 2px;
+      }
+      .h-select-selection:hover .h-select-arrow:nth-of-type(1),
+      .h-select-not-found {
+        display: none;
+      }
+    }
+    .icon-arrowdownb {
+      display: none;
+    }
+    .h-icon {
+      font-size: 22px;
+    }
+    .icon-unfold {
+      display: none;
+    }
+    .toolLast .h-select-dropdown {
+      margin-left: -30px;
+    }
+    .theme .h-select-dropdown {
+      padding: 5px 10px;
+      width: 150px;
+      text-align: left;
+      margin-left: -20px;
+      line-height: 35px;
+      .h-menu-item {
+        width: 40px;
+        display: inline-block;
+        padding: 4px 10px;
+        &:hover {
+          background: #EEEEEE !important;
+        }
+        i {
+          margin: 0;
+          font-size: 20px;
+        }
+      }
+    }
+    .h-menu-dark.h-menu-horizontal {
+      background: $topbar-bgcolor;
+      color: rgba(0,0,0,.65);
+      line-height: $topbar-base-height;
+      height: $topbar-base-height;
+      > .h-menu-item,
+      > .h-menu-submenu {
+        color: rgba(0,0,0,.65);
+        height: $topbar-base-height;
+        padding: $topbar-tool-padding;               
+      }
+      .h-menu-item:first-child:hover {
+        background: none;
+      }
+      .h-menu-item:hover {
+        background: #e6f7ff;
+      }
+      .h-menu-submenu {
+        .h-menu-submenu-title {
+          line-height: $topbar-base-height - 1px;
+        } 
+        .h-select-dropdown {
+          .h-menu-item {
+            -webkit-transition: none;
+            transition: none; 
+          }
+          .h-icon {
+            font-size: 18px;
+            display: inline-block;
+            vertical-align: middle;
+          }
+        }
+        &:hover {
+          color: $topbar-active-color;
+          background: #e6f7ff;
+          
+        }
+      }
+    }
+  }
+}
+@media (max-width: 860px) {
+  .#{$tb-prefix-cls} {
+    &-tool {
+      display: none;
+    }
+  }
+}

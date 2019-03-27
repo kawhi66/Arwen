@@ -1,0 +1,291 @@
+$sidebar-prefix-cls: "#{$css-prefix}sidebar";
+$sidebarWrap-prefix-cls: "#{$sidebar-prefix-cls}-wrapper";
+
+.#{$sidebar-prefix-cls}-wrapper {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: $sidebar-webkit-bgcolor-liner;
+  background: $sidebar-bgcolor-liner;
+  color: $sidebar-color;
+  width: $sidebar-base-width;
+  @include user-select();
+  /* 滚动条 */
+  /*三角箭头的颜色*/
+  scrollbar-arrow-color: $scrollbar-color;
+  /*滚动条滑块按钮的颜色*/
+  scrollbar-face-color: $scrollbar-color;
+  /*滚动条整体颜色*/
+  scrollbar-highlight-color: $scrollbar-bgcolor;
+  /*滚动条阴影*/
+  scrollbar-shadow-color: $scrollbar-bgcolor;
+  /*滚动条轨道颜色*/
+  scrollbar-track-color: $scrollbar-bgcolor;
+  /*滚动条的基本颜色*/ 
+  scrollbar-base-color: $scrollbar-bgcolor; 
+  ::-webkit-scrollbar{
+    width:6px;
+    height:6px;
+    background-color: $scrollbar-bgcolor
+  }
+  ::-webkit-scrollbar-track{
+    -webkit-box-shadow: none;
+    background-color: $scrollbar-bgcolor;
+  }
+  ::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    background: $scrollbar-color;
+  }
+}
+.#{$sidebar-prefix-cls} {
+  &-head {
+    width: $sidebar-base-width;
+    height: $sidebar-head-height;
+    // position: fixed;
+    // top: $topbar-base-height;
+    // padding: 10px 15px 5px 15px;
+    text-align: left;
+    // z-index: 2;
+    background: $sidebar-head-bgcolor;
+    &-logo {
+    width: $sidebar-base-width;
+    height: $sidebar-head-height;
+    line-height: $sidebar-head-height;
+    padding: 0 12px;
+    float: left;
+    color: $topbar-color;
+      &-img {
+        float: left;
+        width: 40px;
+        height: 40px;
+        margin: 10px 0 0 -10px;
+        background: url('../assets/logo.png') 16px 8px no-repeat;
+        // background: url('../../assets/logo.png') 16px 8px no-repeat;
+      }
+      &-span {
+        margin: 0 0 0 12px;;
+        font-size: $sidebar-head-fonsize;
+        font-weight: $sidebar-head-fontweight;
+        color: #fff;
+      }
+    }
+    .expandIcon {
+      position: absolute;
+      top: 7px;
+      right: 20px;
+      font-size: 20px;
+    }
+  }
+  &-menu{
+    padding: 16px 0px;
+    height: 100%;
+    overflow-y: auto;
+    .h-menu-dark.h-menu-vertical {
+      background: $sidebar-bgcolor-liner;
+      background: $sidebar-webkit-bgcolor-liner;
+      height: 100%;
+      overflow-y: auto;
+      .h-menu{
+        font-size: $sidebar-m-fonsize;
+      }
+      .h-menu-item {
+        display: block;
+        position: relative;
+        padding: $sidebar-menu-padding2;
+        text-decoration: none;
+        text-align: left;
+        @include ellipsis();
+        font-weight: 300;
+        font-size: $sidebar-m-fonsize;
+        background: $sidebar-bgcolor;
+        color: $sidebar-color;
+        > i {
+          margin-right: 4px;
+          vertical-align: top;
+        }
+      }
+      /* 一级无子菜单的item */
+      > .selfMenu > a {
+        > .h-menu-item {
+          background: transparent;
+          padding-left: 20px;
+          font-size: $sidebar-m-fonsize;
+          &.h-menu-item-active.h-menu-item-selected,
+          &:hover,
+          &:focus {
+            color: $base-color;
+            background: $sidebar-hover-bgcolor !important;
+            border: none;
+          }
+        }
+      }
+      /* 二级菜单 */
+      .h-menu-submenu {
+        &-title{
+          padding: $sidebar-menu-padding1;
+          line-height: $sidebar-menu-lineheight;
+          text-align: left;
+          background: $sidebar-bgcolor;
+          font-size: $sidebar-m-fonsize;
+          @include ellipsis();
+          color: $sidebar-color;
+          &:hover,
+          &:focus {
+            color: $base-color;
+            background: $sidebar-hover-bgcolor !important;
+          }
+          > i,
+          span > i {
+            margin-right: 4px;
+            vertical-align: top;
+            margin-top: 1px;
+            font-size: $sidebar-l-fonsize;
+            // vertical-align: top;
+          }
+        }
+        > .h-menu {
+          background: $sidebar-submenu-bgcolor;
+        }
+        .h-menu-item {
+          i {
+            font-size: 12px;
+            font-weight: 600;
+          }
+          &-active.h-menu-item-selected,
+          &-active.h-menu-item-selected:hover,
+          &:hover,
+          &:focus {
+            color: $base-color;
+            background: $sidebar-hover-bgcolor !important;
+          }
+        }
+        /* 三级菜单 */
+        .h-menu-submenu {
+          &.h-menu-item-active {
+            color: $base-color;
+            background: $sidebar-bgcolor !important;
+          }
+          .h-menu-submenu-title {
+            padding: $sidebar-menu-padding3title;
+            // background: $sidebar-bgcolor;
+          }
+          .h-menu-item {
+            padding: $sidebar-menu-padding3;
+          }
+          > .h-menu {
+            background: $sidebar-submenu-bgcolor;
+          }
+        }
+      }
+      .h-menu-opened {
+        background: $sidebar-bgcolor;
+        .h-menu-submenu .h-menu-submenu-title {
+          background: $sidebar-bgcolor;
+        }
+        .h-menu-submenu .h-menu-submenu-title:hover {
+          color: $base-color;
+          background: $sidebar-hover-bgcolor !important;
+        }
+      }
+      .h-menu-vertical .h-menu-submenu-title-icon {
+        float: none;
+        position: absolute;
+        right: 15px;
+        top: 10px;
+      }
+      .icon-yuan:before {
+        font-weight: 700;
+      }
+    }
+  }
+}
+/* menu collapse */
+.hideSidebar {
+  .#{$sidebar-prefix-cls}-wrapper {
+    width: $sidebar-collapse-width;
+  }
+  .#{$sidebar-prefix-cls} {
+    &-head {
+      width: $sidebar-collapse-width;
+      &-logo {
+         width: $sidebar-collapse-width;
+         &-img {
+           margin-left: 1px;
+         }
+      }
+
+    }
+    &-menu {
+      .h-menu-dark.h-menu-vertical.h-menu-collapse {
+        width: $sidebar-collapse-width;
+        // ---collapse时菜单无法正常显示
+        position: static;
+        /* 一级无子菜单的item */
+        > .selfMenu > a span {
+          display: none;
+        }
+        .selfMenu {
+          position: absolute
+        }
+        .selfMenu.menu-indent {
+          position: static
+        }
+        // ---
+        .h-menu-submenu {
+          i.h-menu-submenu-title-icon {
+            display: none;
+          }
+          .h-menu {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            width: $sidebar-base-width;
+            background: $sidebar-hide-bgcolor;
+            margin-left: 5px;
+            border-radius: 4px;
+            z-index: 9999;
+          }
+          > .h-menu-submenu-title {
+            padding-right: 24px;
+            padding-left: 28px;
+            .iconfont {
+              font-size: 20px;
+            }
+            span {
+              height: 0;
+              width: 0;
+              overflow: hidden;
+              visibility: hidden;
+              display: inline-block;
+            }
+          }
+        }
+        .nest-menu {
+          .h-menu-submenu{
+            > .h-menu-submenu-title span {
+              display: inline;
+              height: auto;
+              width: auto;
+              visibility: visible;
+            }
+          }
+          i.h-menu-submenu-title-icon {
+            display: inline-block; 
+          }
+          .h-menu-submenu .h-menu-submenu-title i:first-child {
+            display: none;
+          }
+        }
+        .menu-indent {
+          display: block;
+          text-indent: 10px;
+        }
+      }
+    }
+  }
+  .h-topbar-wrapper {
+    padding-left: $sidebar-collapse-width;
+  }
+}

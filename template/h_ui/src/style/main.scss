@@ -1,0 +1,27 @@
+/* frame */
+@import './frame/frame_custom.scss';
+/* components */
+@import './components/component_custom.scss';
+/* views */
+@import './views/view_custom.scss';
+
+// 针对不同主题进行修改，当前是default
+// @import './theme/default/custom.scss';
+// @import './theme/black/custom.scss';
+/* frame */
+@import './frame/frame.scss';
+/* components */
+@import './components/component.scss';
+/* views */
+@import './views/views.scss';
+/* views--form*/
+@import './views/form/basicform.scss';
+@import './views/form/stepform.scss';
+/* views--list*/
+@import './views/list/basiclist.scss';
+@import './views/list/tablelist.scss';
+/* views--result*/
+@import './views/result/result.scss';
+/* views--dashboard*/
+@import './views/dashboard/dashboard.scss';
+@import './views/dashboard/monitor.scss';

@@ -1,0 +1,26 @@
+// 基准变量重写
+/* hui */
+@import '../../hui/icon/_index.scss';
+@import '../../hui/custom.scss';
+/* frame */
+@import '../../frame/frame_custom.scss';
+/* components */
+@import '../../components/component_custom.scss';
+/* views */
+@import '../../views/view_custom.scss';
+
+@import './custom.scss';
+
+// 引入其他
+/* hui */
+@import '../../hui/custom.scss';
+@import '../../hui/mixins/_index.scss';
+@import '../../hui/common/_index.scss';
+@import '../../hui/animation/_index.scss';
+@import '../../hui/components/_index.scss';
+/* frame */
+@import '../../frame/frame.scss';
+/* components */
+@import '../../components/component.scss';
+/* views */
+@import '../../views/views.scss';

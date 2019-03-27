@@ -1,0 +1,132 @@
+$navbar-prefix-cls: "#{$css-prefix}navbar";
+$navbarWrap-prefix-cls: "#{$navbar-prefix-cls}-wrapper";
+
+.#{$navbarWrap-prefix-cls} {
+  height: $navbar-base-height;
+  position: fixed;
+  top: $topbar-base-height;
+  left: $sidebar-base-width;
+  bottom: 0;
+  right:0; 
+  padding: $navbar-wrap-padding;
+  text-align: left;
+  // overflow: hidden;
+  z-index: 1;
+  font-size: $s-font-size;
+  background: $navbar-bgcolor;
+  color: $navbar-color;
+  overflow: hidden;
+  margin-bottom: 3px;
+  > div {
+    // @include ellipsis();
+    vertical-align: top;
+  }
+  .tabs-view-container {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    .tags-inner-scroll-body {
+      position: absolute;
+      // padding: 2px 10px;
+      overflow: visible;
+      white-space: nowrap;
+      transition: left .3s ease;
+      > span > a:first-child {
+        .h-tag.h-tag-closable:hover {
+          i.icon-close.h-icon-close {
+            display: none;
+          }
+        }
+      }
+      .h-tag {
+        height: $navbar-tag-height;
+        line-height: $navbar-tag-lineheight;
+        margin: 0;
+        padding: $navbar-tag-padding;
+        border: none;
+        background: none;
+        font-size: 13px;
+        span {
+          margin: 0 8px;
+        }
+        &.h-tag-closable {
+          position: relative;
+          i.icon-close.h-icon-close {
+            display: none;
+            position: absolute;
+            right: $navbar-tag-close-right;
+            top: $navbar-tag-close-top;
+          }
+          &:hover {
+            i.icon-close.h-icon-close {
+              display: inline-block;
+            }
+          }
+        }
+        &.h-tag-active:after {
+          display: block;
+          width: 100%;
+          height: 2px;
+          background: $navbar-tag-hover-bgcolor;
+          content: '';
+        }
+      }
+    }
+    .h-tag-close-tip {
+      display: none;
+      // visibility: hidden;
+      position: fixed;
+      // position: absolute;
+      width: $navbar-tag-close-tip-width;
+      height: $navbar-tag-close-tip-height;
+      padding: $navbar-tag-close-tip-padding;
+      background-color: $navbar-tag-close-tip-bgcolor;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+      &-item {
+        display: block;
+        height: $navbar-tag-close-tip-item-height;
+        line-height: $navbar-tag-close-tip-item-height;
+        outline: none;
+        list-style: none;
+        font-size: $navbar-m-fonsize;
+        cursor: pointer;
+        span {
+          display: block;
+          padding-left: 10px
+        }
+        &:hover {
+          background: $navbar-tag-close-tip-item-hover-bgcolor;
+          color: $navbar-tag-close-tip-item-hover-color;
+        }
+      }
+    }
+  }
+}
+.hideSidebar {
+  .#{$navbarWrap-prefix-cls} {
+    left: $sidebar-collapse-width;
+  }
+}
+// 首页
+.isMainIndex .#{$navbarWrap-prefix-cls},
+.isMainIndex.hideSidebar .#{$navbarWrap-prefix-cls} {
+  left: 0;
+}
+@media (max-width: 860px) {
+  .#{$navbarWrap-prefix-cls} {
+    padding-right: 15px;
+  }
+  .#{$navbar-prefix-cls} {
+    &-breadcrumb {
+      max-width: 100%;
+    }
+    &-toolbar {
+      display: none;
+    }
+  }
+}

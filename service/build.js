@@ -1,19 +1,25 @@
-const fs = require('fs-extra');
-const path = require('path');
-const shell = require('shelljs');
+const fs = require('fs-extra')
+const path = require('path')
 
-exports.command = 'build';
-exports.describe = 'compile and build';
-exports.builder = {};
-exports.handler = function (argv) {
-    fs.pathExists(path.resolve(process.cwd(), './package.json')).then(function (exists) {
-        if (!exists) {
-            console.log('um...please do this in an arwen project directory!');
-            return shell.exit(1);
-        };
+exports.command = 'build'
+exports.describe = 'compile and build'
+exports.builder = {}
+exports.handler = function(argv) {
+    fs.readJson(path.resolve(process.cwd(), 'package.json')).then(result => {
+        const type = (() => {
+            const {
+                arwen_type
+            } = result;
 
-        process.env.ARWEN_ENV = 'production';
-        process.env.ARWEN_TYPE = require(path.resolve(process.cwd(), './package.json')).ARWEN_TYPE;
-        require('./lib/release');
-    });
-}
+            if (['vue', 'h_ui'].includes(arwen_type)) {
+                return 'vue'
+            } else if (['react'].includes(arwen_type)) {
+                return 'react'
+            };
+        })();
+
+        require(`./${type}-scripts/lib/build.js`)();
+    }).catch(err => {
+        console.error('[error]: ', require('util').inspect(err))
+    })
+};

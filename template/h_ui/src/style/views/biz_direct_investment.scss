@@ -1,0 +1,56 @@
+  // 主页面
+  .h-datagrid .operation .h-tooltip-popper[x-placement^="right"] .h-tooltip-arrow {
+    border-right-color: #F1F1F1;
+  }
+  .h-datagrid .operation .h-tooltip-inner {
+    background: #F1F1F1;
+    padding: 0;
+    max-width: 500px;
+    min-height: 25px;
+  }
+  .h-datagrid .operation .h-tooltip-inner li {
+    display: block;
+    float: left;
+  }
+  .h-datagrid .operation .h-tooltip-inner li a {
+    display: block;
+    width: auto;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    padding: 0 10px;
+    font-size: 13px;
+    color: #8968CD;
+  }
+  .h-datagrid .operation .h-tooltip-inner li a:hover {
+    background-color: #419CF0 ;
+    color: #FFFFFF;
+  }
+  .h-datagrid .index .h-table-cell {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .h-datagrid .investDetailCode a {
+    text-decoration: underline;
+  }
+  .h-window-nobutton .h-modal-body {
+    padding: 5px;
+  }
+  .h-window-nobutton .h-modal-footer{
+    display: none;
+  }
+  // add子页面
+  .h-typefield input {
+    line-height: 1.5;
+  }
+  .fieldAnchor {
+    position: fixed;
+    top: 120px;
+    right: 40px;
+  }
+  .h-timeline-item-content {
+    font-weight: 700;
+  }
+  .h-timeline-item-head.h-timeline-item-head-blue ~ .h-timeline-item-content{
+    font-weight: 400;
+  }

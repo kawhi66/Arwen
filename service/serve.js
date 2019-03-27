@@ -1,6 +1,5 @@
 const fs = require('fs-extra');
 const path = require('path');
-const shell = require('shelljs');
 
 exports.command = 'serve [options]';
 exports.describe = 'launch the server for development mode';
@@ -12,16 +11,26 @@ exports.builder = {
         type: 'string'
     }
 };
-exports.handler = function (argv) {
-    fs.pathExists(path.resolve(process.cwd(), './package.json')).then(function (exists) {
-        if (!exists) {
-            console.log('um...please do this in an arwen project directory!');
-            return shell.exit(1);
-        };
 
-        process.env.ARWEN_ENV = 'development';
-        process.env.ARWEN_TYPE = require(path.resolve(process.cwd(), './package.json')).ARWEN_TYPE;
+exports.handler = function(argv) {
+    fs.readJson(path.resolve(process.cwd(), 'package.json')).then(result => {
+        const type = (() => {
+            const {
+                arwen_type
+            } = result;
+
+            if (['vue', 'h_ui'].includes(arwen_type)) {
+                return 'vue'
+            } else if (['react'].includes(arwen_type)) {
+                return 'react'
+            };
+        })();
+
+        // set ARWEN_PORT
         process.env.ARWEN_PORT = argv.port;
-        require('./lib/release');
-    });
+
+        require(`./${type}-scripts/lib/serve.js`)();
+    }).catch(err => {
+        console.error('[error]: ', require('util').inspect(err))
+    })
 }

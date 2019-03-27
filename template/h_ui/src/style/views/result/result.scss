@@ -1,0 +1,69 @@
+    .content {
+        margin: 24px 24px 0;
+    }
+    
+  .result {
+      text-align: center;
+      width: 72%;
+      margin: 0 auto;
+  }
+  .result .extra {
+    background: #fafafa;
+    padding: 24px 40px;
+    border-radius: 2px;
+    text-align: left;
+}
+
+.result .title {
+    font-size: 24px;
+    color: rgba(0,0,0,.85);
+    font-weight: 500;
+    line-height: 32px;
+    margin-bottom: 16px;
+}
+.result .description {
+    font-size: 14px;
+    line-height: 22px;
+    color: rgba(0,0,0,.45);
+    margin-bottom: 24px;
+}
+.card {
+    font-family: "Monospaced Number","Chinese Quote",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(0,0,0,.65);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: #fff;
+    border-radius: 2px;
+    position: relative;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+}
+.card-wider-padding .card-body {
+    padding: 24px 32px;
+}
+.card-body {
+    zoom: 1;
+}
+.layout-footer {
+    background: #f0f2f5;
+    padding: 24px 50px;
+    color: rgba(0,0,0,.65);
+    font-size: 14px;
+}
+.globalFooter {
+    padding: 0 16px;
+    margin: 48px 0 24px;
+    text-align: center;
+}
+.globalFooter .links {
+    margin-bottom: 8px;
+}
+.globalFooter .copyright {
+    color: rgba(0,0,0,.45);
+    font-size: 14px;
+}

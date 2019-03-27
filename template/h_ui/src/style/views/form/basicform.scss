@@ -1,0 +1,68 @@
+.pageHeader {
+    background: #fff;
+    padding: 16px 32px 0;
+}
+.main_container {
+  flex: 1 1 0%;
+}
+.row_box {
+  display: flex;
+}
+.title_detail {
+  margin-bottom: 16px;
+}
+
+.pageHeader .detail_box, .pageHeader .row_box {
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 14px
+}
+ .pageHeader .content_detail, .pageHeader .title_detail {
+    margin-bottom: 16px;
+}
+ .pageHeader .content_detail, .pageHeader .main_container, .pageHeader .title_detail {
+    -ms-flex: 1 1 0%;
+    flex: 1 1 0%;
+}
+.pageHeader .title_detail {
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(0,0,0,.85);
+}
+
+.pageContent {
+    margin-top: 20px;
+    background: #f0f2f5;
+}
+
+.card {
+    font-family: "Monospaced Number","Chinese Quote",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(0,0,0,.65);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: #fff;
+    border-radius: 2px;
+    position: relative;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+}
+
+.card-wider-padding .card-body {
+    padding: 24px 32px;
+}
+.card-body {
+    padding: 24px;
+    zoom: 1;
+    margin:0 auto;
+}
+.card-body-form{
+    padding: 24px;
+    zoom: 1;
+    width: 50%;
+    margin:0 auto;
+}
