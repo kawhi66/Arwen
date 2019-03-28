@@ -1,8 +1,8 @@
-const fs = require('fs-extra');
-const path = require('path');
+const fs = require('fs-extra')
+const path = require('path')
 
-exports.command = 'create [name] [options]';
-exports.describe = 'generate the project based on template';
+exports.command = 'create [name] [options]'
+exports.describe = 'generate the project based on template'
 exports.builder = {
     name: {
         alias: 'n',
@@ -16,14 +16,14 @@ exports.builder = {
         describe: 'specify the project type',
         type: 'string'
     }
-};
+}
 
 exports.handler = function(argv) {
-    const src = path.resolve(__dirname, '..', 'template', argv.type);
-    const dest = path.join(process.cwd(), argv.name);
+    const src = path.resolve(__dirname, '..', 'template', argv.type)
+    const dest = path.join(process.cwd(), argv.name)
 
     // set ARWEN_TYPE
-    // process.env.ARWEN_TYPE = argv.type;
+    // process.env.ARWEN_TYPE = argv.type
 
     /**
      * copy the template to the dest dir

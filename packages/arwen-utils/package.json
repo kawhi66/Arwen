@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "https://github.com/kawhi66/arwen",
   "author": "kawhi.site",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "react-dev-utils": "^8.0.0"
+  }
 }
