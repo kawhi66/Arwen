@@ -1,5 +1,6 @@
-const fs = require('fs-extra')
 const path = require('path')
+const fs = require('fs-extra')
+const spawn = require('cross-spawn')
 
 exports.command = 'create [name] [options]'
 exports.describe = 'generate the project based on template'
@@ -19,29 +20,46 @@ exports.builder = {
 }
 
 exports.handler = function(argv) {
-    const src = path.resolve(__dirname, '..', 'template', argv.type)
-    const dest = path.join(process.cwd(), argv.name)
-
-    // set ARWEN_TYPE
-    // process.env.ARWEN_TYPE = argv.type
-
     /**
-     * copy the template to the dest dir
-     * merge template-defined package.json before createing one
+     * @description run create tasks
+     * @event 1. make directory as ${argv.name}
+     * @event 2. init a package.json as ${argv.type}, install packages
+     * @event 3. copy the template from ${argv.type}-scripts
      *
-     * todo README.md ?
+     * @todo how to identify arwen project
+     * @todo friendly creation
      */
-    fs.copy(src, dest).then(() => {
-        return fs.readJson(path.resolve(src, 'package.json'))
-    }).then(result => {
-        return fs.writeJson(path.resolve(dest, 'package.json'), Object.assign({
+    const cwd = path.join(process.cwd(), argv.name)
+    const core = `${argv.type}-scripts`
+
+    fs.ensureDir(cwd).then(() => {
+        process.chdir(cwd) // change work directory
+
+        return fs.writeJson('./package.json', {
             name: argv.name,
-            description: "an arwen project",
             version: "1.0.0",
-            arwen_type: argv.type
-        }, result), {
+            dependencies: {
+                // "arwen-utils": "^1.0.0",
+                // [core]: "^1.0.0"
+            }
+        }, {
             spaces: '\t'
         })
+    }).then(() => {
+        return new Promise((resolve, reject) => {
+            const child = spawn('yarn', ['link', core], {
+                stdio: 'inherit'
+            }) // dev
+
+            child.on('close', code => {
+                if (code !== 0) return reject()
+                resolve()
+            })
+        })
+    }).then(() => {
+        return fs.copy(path.join(cwd, 'node_modules', core, 'template'), cwd)
+    }).then(() => {
+        console.log("create ok")
     }).catch(err => {
         console.error('[error]: ', require('util').inspect(err))
     })
