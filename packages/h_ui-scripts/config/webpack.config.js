@@ -1,24 +1,23 @@
-const fs = require('fs-extra')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const BabelPluginTransformRuntime = require('@babel/plugin-transform-runtime')
 const path = require('path')
-const {
-    resolveArwenPath,
-    resolveWorkPath
-} = require('../utils')
+const resolveArwenPath = require('arwen-utils')["resolveArwenPath"]
+
+const core = path.join(process.cwd(), 'node_modules', 'h_ui-scripts')
+const core_modules = path.join(core, 'node_modules')
+const cwd = process.cwd()
 
 // DEBUG:
-// console.log(path.resolve(resolveWorkPath(), 'node_modules', "vue/dist/vue.esm"));
+// console.log(path.resolve(__dirname, '../node_modules'))
 
 module.exports = {
     mode: "development",
     devtool: 'inline-source-map',
-    context: process.cwd(),
-    entry: path.resolve(process.cwd(), 'src', 'main.js'),
+    context: cwd,
+    entry: path.join(cwd, 'src', 'main'),
     output: {
-        path: path.resolve(process.cwd(), 'dist'),
+        path: path.join(cwd, 'dist'),
         filename: '[name].js',
         publicPath: '/'
     },
@@ -34,7 +33,7 @@ module.exports = {
             exclude: /node_modules/,
             loader: 'babel-loader',
             options: {
-                cwd: resolveArwenPath(),
+                cwd: core,
                 presets: ['@babel/preset-env'],
                 plugins: ['@babel/transform-runtime', '@babel/syntax-dynamic-import']
             }
@@ -65,20 +64,20 @@ module.exports = {
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],
-        modules: [path.resolve(resolveArwenPath(), 'node_modules'), "node_modules"],
+        modules: [core_modules, 'node_modules'],
         alias: {
-            'vue$': path.resolve(process.cwd(), 'node_modules', 'vue/dist/vue.esm'),
-            "@": path.resolve(process.cwd(), 'src'),
+            'vue$': path.resolve(core_modules, 'vue/dist/vue.esm'),
+            '@': path.resolve(cwd, 'src')
         }
     },
     resolveLoader: {
-        modules: [path.resolve(resolveArwenPath(), 'node_modules'), "node_modules"]
+        modules: [core_modules, 'node_modules']
     },
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: path.resolve(process.cwd(), 'index.html'),
+            template: 'index.html',
             inject: true
         }),
         new VueLoaderPlugin()

@@ -41,7 +41,8 @@ exports.handler = function(argv) {
             dependencies: {
                 // "arwen-utils": "^1.0.0",
                 // [core]: "^1.0.0"
-            }
+            },
+            arwen_type: argv.type // identify arwen project ? could be use in serve or build process
         }, {
             spaces: '\t'
         })
