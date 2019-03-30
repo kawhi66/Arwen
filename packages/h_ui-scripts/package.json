@@ -1,5 +1,5 @@
 {
-  "name": "h_ui-scripts",
+  "name": "@arwen/h_ui-scripts",
   "version": "1.0.0",
   "description": "h_ui-scripts",
   "main": "index.js",

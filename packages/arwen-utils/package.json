@@ -1,5 +1,5 @@
 {
-  "name": "arwen-utils",
+  "name": "@arwen/arwen-utils",
   "version": "1.0.0",
   "description": "arwen-utils",
   "main": "index.js",

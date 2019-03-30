@@ -1,5 +1,5 @@
 {
-    "name": "arwen-cli",
+    "name": "@arwen/arwen-cli",
     "version": "1.0.0",
     "description": "arwen-cli",
     "main": "index.js",

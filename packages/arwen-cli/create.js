@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const spawn = require('cross-spawn')
 
-exports.command = 'create'
+exports.command = 'create [name]'
 exports.describe = 'generate the project based on template'
 exports.builder = {
     name: {
@@ -13,7 +13,7 @@ exports.builder = {
     },
     type: {
         alias: 't',
-        default: 'vue',
+        default: 'h_ui',
         describe: 'specify the project type',
         type: 'string'
     }
