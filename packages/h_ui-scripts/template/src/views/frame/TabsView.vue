@@ -2,20 +2,20 @@
   <div class="tabs-view-container" ref="scrollCon" @DOMMouseScroll.prevent.stop="handlescroll" @mousewheel.prevent.stop="handlescroll">
     <div ref="scrollBody" class="tags-inner-scroll-body" :style="{left: tagBodyLeft + 'px'}">
       <transition-group name="taglist-moving-animation">
-        <router-link class="tabs-view" v-for="(tag, index) in Array.from(visitedViews)" :to="tag.path" :key="index" :style="{left: tagBodyLeft + 'px'}">
+        <router-link class="tabs-view" v-for="(tag, index) in Array.from(visitedViews)" :to="tag.path" :key="tag.name" :style="{left: tagBodyLeft + 'px'}">
             <h-tag closable :name="tag.name" :color="isActive(tag.path)? 'active' : 'default'" @on-close ='closeViewTabs($event, tag, index)' @click.right.native.stop.prevent="closeChoice($event, tag, index)" ref="tagsPageOpened">
               {{tag.name}}
             </h-tag>
         </router-link>
       </transition-group>
     </div>
-    <ul class="h-tag-close-tip" :style="styles" v-clickoutside="handleHide"> 
+    <ul class="h-tag-close-tip" :style="styles" v-clickoutside="handleHide">
       <li class="h-tag-close-tip-item" @click.stop.prevent="handleCloseCurrent()">
         <span>关闭当前选项卡</span>
-      </li> 
+      </li>
       <li class="h-tag-close-tip-item" @click.stop.prevent="handleCloseAll()">
         <span>关闭全部选项卡</span>
-      </li> 
+      </li>
       <li class="h-tag-close-tip-item" @click.stop.prevent="handleCloseOther()">
         <span>关闭当前以外选项卡</span>
       </li>
@@ -91,7 +91,7 @@
             this.$router.push({path: newPath})
           }
         } else {//关闭非当前页面，直接关闭
-          
+
         }
       },
       addViews () {
@@ -190,7 +190,7 @@
       this.addViews()
     },
     mounted () {
-      // 右击阻止原生浏览器事件 
+      // 右击阻止原生浏览器事件
       document.getElementsByClassName("tabs-view-container")[0].oncontextmenu = function(e){
       　return false;
       }

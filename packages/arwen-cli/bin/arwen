@@ -10,53 +10,89 @@ yargs
     .command(require('../create'))
     .command({
         command: 'serve',
-        desc: 'launch the server in development mode',
+        description: 'launch the server in development mode',
         aliases: ['start', 'dev'],
         builder: yargs => {
-            const {
-                arwen
-            } = fs.readJsonSync('./package.json')
-
             return yargs
-                .config({
-                    ...arwen
-                }) // what will happen if there are port key in the arwen ??
+                .option('host', {
+                    alias: 'h',
+                    default: 'localhost',
+                    description: 'specify host',
+                    type: 'string'
+                })
                 .option('port', {
                     alias: 'p',
                     default: '3000',
-                    describe: 'set the port',
+                    description: 'specify port',
                     type: 'string'
                 })
         },
-        handler: (argv) => {
+        handler: argv => {
+            process.env.HOST = argv.host
+            process.env.PORT = argv.port
+
             const Service = require(`${argv.type}-scripts`)
-            new Service(argv.port).run('serve')
-        }
+            new Service().run('serve')
+        },
+        middleware: [verifyPkgConfig]
     })
     .command({
-        command: 'build',
-        desc: 'compile and build',
-        builder: yargs => {
-            const {
-                arwen
-            } = fs.readJsonSync('./package.json')
-
-            return yargs
-                .config({
-                    ...arwen
-                })
-        },
-        handler: (argv) => {
+        command: ['build', 'pack'],
+        description: 'compile and build',
+        builder: {},
+        handler: argv => {
             const Service = require(`${argv.type}-scripts`)
             new Service().run('build')
-        }
+        },
+        middleware: [verifyPkgConfig]
     })
-    .usage('Usage: arwen [command] [options]')
-    .alias('h', 'help')
-    .alias('v', 'version')
-    .example('$0 create -t vue', 'generate vue type project')
-    .example('$0 serve', 'debug for development environment')
-    .example('$0 build', 'build for production environment')
+    // .middleware(verifyPkgConfig)
+    .usage('Usage: arwen <command> [options]')
+    .example('$0 create demo -t h_ui', 'generate h_ui project')
+    .example('$0 serve', 'run the server for development environment')
+    .example('$0 build', 'run the build for production environment')
     .epilog('https://kawhi.site')
+    .alias('v', 'version')
+    .fail((msg, err, yargs) => {
+        if (err) {
+            throw err
+        }
+
+        yargs.exit(1, err)
+    })
     .help()
     .argv
+
+/**
+ * @description async middleware to verify if the current work directory is an valid an arwen project
+ * @description it should only work for command serve and build
+ * @todo if don't exit manually, the process won't be interruptted no matter what does this middleware returns
+ * @todo It doesn 't seem logical for a middleware
+ */
+function verifyPkgConfig(argv) {
+    const {
+        _: [command]
+    } = argv
+
+    return fs.readJson('./package.json').then(({
+        arwen
+    }) => {
+        if (arwen && arwen.type) {
+            return {
+                ...arwen,
+                ...argv
+            }
+        } else {
+            throw new Error({
+                code: 'INVALID_ARWEN_TYPE',
+                message: 'invalid arwen type, this may not an arwen project'
+            })
+        }
+    }).catch(err => {
+        console.log(
+            'this command should run in the arwen project\n' +
+            `you may wanna run arwen ${command} --help`
+        )
+        yargs.exit(1, err)
+    })
+}

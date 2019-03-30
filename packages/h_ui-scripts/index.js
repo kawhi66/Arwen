@@ -1,6 +1,8 @@
+const fs = require('fs-extra')
+
 module.exports = class Service {
-    constructor(port) {
-        process.env.ARWEN_PORT = port
+    constructor() {
+        // todo
     }
 
     /**
@@ -8,6 +10,11 @@ module.exports = class Service {
      * @param {String} task name
      */
     run(task) {
-        require(`./lib/${task}`)()
+        if (['serve', 'build'].includes(task)) {
+            require(`./lib/${task}`)()
+        } else throw new Error({
+            code: 'INVALID_ARWEN_TASK',
+            message: 'invalid arwen task, you many wanna run arwen --help'
+        })
     }
 }

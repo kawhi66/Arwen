@@ -19,6 +19,7 @@
     "echarts": "^4.2.1",
     "echarts-amap": "^1.0.0-rc.6",
     "file-loader": "^3.0.1",
+    "fs-extra": "^7.0.1",
     "h_charts": "^1.0.1-20180709",
     "h_ui": "^1.0.32",
     "html-loader": "^0.5.5",

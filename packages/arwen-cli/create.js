@@ -2,19 +2,19 @@ const path = require('path')
 const fs = require('fs-extra')
 const spawn = require('cross-spawn')
 
-exports.command = 'create [name]'
-exports.describe = 'generate the project based on template'
+exports.command = ['create <name>', 'init']
+exports.description = 'generate the project based on template'
 exports.builder = {
     name: {
         alias: 'n',
         default: 'arwen',
-        describe: 'specify the project name',
+        description: 'specify the project name',
         type: 'string'
     },
     type: {
         alias: 't',
         default: 'h_ui',
-        describe: 'specify the project type',
+        description: 'specify the project type',
         type: 'string'
     }
 }
@@ -23,17 +23,23 @@ exports.handler = function(argv) {
     /**
      * @description run create tasks
      * @event 1. make directory as ${argv.name}
-     * @event 2. init a package.json as ${argv.type}, install packages
+     * @event 2. init a package.json as ${argv.type}, install the core dependency ${argv.type}-scripts
      * @event 3. copy the template from ${argv.type}-scripts
-     *
-     * @todo how to identify arwen project
+     * @event 4. merge package.json with template package.json, install packages
+     * @todo arwen-utils add function mergePkgConfig
      * @todo friendly creation
      */
     const cwd = path.join(process.cwd(), argv.name)
     const core = `${argv.type}-scripts`
+    return console.log(argv)
 
     fs.ensureDir(cwd).then(() => {
         process.chdir(cwd) // change work directory
+        return fs.copy(path.join(cwd, 'node_modules', core, 'template'), cwd) // copy template
+    }).then(() => {
+        const {
+            dependencies
+        } = fs.readJsonSync('./package.json')
 
         return fs.writeJson('./package.json', {
             name: argv.name,
@@ -41,10 +47,11 @@ exports.handler = function(argv) {
             dependencies: {
                 // "arwen-utils": "^1.0.0",
                 // [core]: "^1.0.0"
+                ...dependencies
             },
             arwen: {
-                type: argv.type
-            } // identify arwen project ? could be use in serve or build process
+                type: argv.type // identify arwen project
+            }
         }, {
             spaces: '\t'
         })
@@ -59,8 +66,6 @@ exports.handler = function(argv) {
                 resolve()
             })
         })
-    }).then(() => {
-        return fs.copy(path.join(cwd, 'node_modules', core, 'template'), cwd)
     }).then(() => {
         console.log("create ok")
     }).catch(err => {
