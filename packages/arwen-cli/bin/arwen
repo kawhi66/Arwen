@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+
+const fs = require('fs-extra')
+const yargs = require('yargs')
+
+yargs
+    .command('$0', false, yargs => {}, argv => {
+        console.log('hello arwen')
+    }) // this is a hidden command
+    .command(require('../create'))
+    .command({
+        command: 'serve',
+        desc: 'launch the server in development mode',
+        aliases: ['start', 'dev'],
+        builder: yargs => {
+            const {
+                arwen
+            } = fs.readJsonSync('./package.json')
+
+            return yargs
+                .config({
+                    ...arwen
+                }) // what will happen if there are port key in the arwen ??
+                .option('port', {
+                    alias: 'p',
+                    default: '3000',
+                    describe: 'set the port',
+                    type: 'string'
+                })
+        },
+        handler: (argv) => {
+            const Service = require(`${argv.type}-scripts`)
+            new Service(argv.port).run('serve')
+        }
+    })
+    .command({
+        command: 'build',
+        desc: 'compile and build',
+        builder: yargs => {
+            const {
+                arwen
+            } = fs.readJsonSync('./package.json')
+
+            return yargs
+                .config({
+                    ...arwen
+                })
+        },
+        handler: (argv) => {
+            const Service = require(`${argv.type}-scripts`)
+            new Service().run('build')
+        }
+    })
+    .usage('Usage: arwen [command] [options]')
+    .alias('h', 'help')
+    .alias('v', 'version')
+    .example('$0 create -t vue', 'generate vue type project')
+    .example('$0 serve', 'debug for development environment')
+    .example('$0 build', 'build for production environment')
+    .epilog('https://kawhi.site')
+    .help()
+    .argv
