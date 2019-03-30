@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const spawn = require('cross-spawn')
 
-exports.command = 'create [name] [options]'
+exports.command = 'create'
 exports.describe = 'generate the project based on template'
 exports.builder = {
     name: {
@@ -42,7 +42,9 @@ exports.handler = function(argv) {
                 // "arwen-utils": "^1.0.0",
                 // [core]: "^1.0.0"
             },
-            arwen_type: argv.type // identify arwen project ? could be use in serve or build process
+            arwen: {
+                type: argv.type
+            } // identify arwen project ? could be use in serve or build process
         }, {
             spaces: '\t'
         })
