@@ -2,9 +2,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const path = require('path')
-const resolveArwenPath = require('arwen-utils')["resolveArwenPath"]
 
-const core = path.join(process.cwd(), 'node_modules', 'h_ui-scripts')
+const core = path.join(process.cwd(), 'node_modules', '@arwen/h_ui-scripts')
 const core_modules = path.join(core, 'node_modules')
 const cwd = process.cwd()
 

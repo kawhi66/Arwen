@@ -2,51 +2,53 @@
 
 const fs = require('fs-extra')
 const yargs = require('yargs')
+const {
+    ErrorHandler
+} = require('@arwen/arwen-utils')
 
 yargs
     .command('$0', false, yargs => {}, argv => {
         console.log('hello arwen')
     }) // this is a hidden command
     .command(require('../create'))
-    .command({
-        command: 'serve',
-        description: 'launch the server in development mode',
-        aliases: ['start', 'dev'],
-        builder: yargs => {
-            return yargs
-                .option('host', {
-                    alias: 'h',
-                    default: 'localhost',
-                    description: 'specify host',
-                    type: 'string'
-                })
-                .option('port', {
-                    alias: 'p',
-                    default: '3000',
-                    description: 'specify port',
-                    type: 'string'
-                })
-        },
-        handler: argv => {
-            process.env.HOST = argv.host
-            process.env.PORT = argv.port
+    .command(['serve', 'start', 'dev'], 'launch the server in development mode', yargs => {
+        return yargs
+            .option('host', {
+                alias: 'h',
+                default: 'localhost',
+                description: 'specify host',
+                type: 'string'
+            })
+            .option('port', {
+                alias: 'p',
+                default: '3000',
+                description: 'specify port',
+                type: 'string'
+            })
+    }, argv => {
+        process.env.ARWEN_HOST = argv.host
+        process.env.ARWEN_PORT = argv.port
 
-            const Service = require(`${argv.type}-scripts`)
-            new Service().run('serve')
-        },
-        middleware: [verifyPkgConfig]
-    })
+        const Service = require(`@arwen/${argv.type}-scripts`)
+        new Service().run('serve')
+    }, [verifyPkgConfig])
+    .command(['build', 'pack'], 'compile and build', {}, argv => {
+        const Service = require(`@arwen/${argv.type}-scripts`)
+        new Service().run('build')
+    }, [verifyPkgConfig])
     .command({
-        command: ['build', 'pack'],
-        description: 'compile and build',
+        command: 'test1',
+        description: false,
         builder: {},
         handler: argv => {
-            const Service = require(`${argv.type}-scripts`)
-            new Service().run('build')
+            console.log(argv)
         },
-        middleware: [verifyPkgConfig]
+        middle: [verifyPkgConfig] // WARNING: it won't work
     })
-    // .middleware(verifyPkgConfig)
+    .command('test2', false, {}, argv => {
+        console.log(argv)
+    }, [verifyPkgConfig])
+    // .middleware(verifyPkgConfig) // global middleware
     .usage('Usage: arwen <command> [options]')
     .example('$0 create demo -t h_ui', 'generate h_ui project')
     .example('$0 serve', 'run the server for development environment')
@@ -57,8 +59,6 @@ yargs
         if (err) {
             throw err
         }
-
-        yargs.exit(1, err)
     })
     .help()
     .argv
@@ -70,10 +70,6 @@ yargs
  * @todo It doesn 't seem logical for a middleware
  */
 function verifyPkgConfig(argv) {
-    const {
-        _: [command]
-    } = argv
-
     return fs.readJson('./package.json').then(({
         arwen
     }) => {
@@ -83,16 +79,13 @@ function verifyPkgConfig(argv) {
                 ...argv
             }
         } else {
-            throw new Error({
-                code: 'INVALID_ARWEN_TYPE',
-                message: 'invalid arwen type, this may not an arwen project'
-            })
+            throw new ErrorHandler('INVALID_ARWEN_TYPE')
         }
     }).catch(err => {
-        console.log(
-            'this command should run in the arwen project\n' +
-            `you may wanna run arwen ${command} --help`
-        )
+        if (!err.isArwen) {
+            err = new ErrorHandler('UNKNOWN_ERROR')
+        }
+        console.error(`${err.code}: ${err.message}`)
         yargs.exit(1, err)
     })
 }

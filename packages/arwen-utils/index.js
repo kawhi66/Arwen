@@ -1,12 +1,10 @@
 const path = require('path')
 const openBrowser = require('react-dev-utils/openBrowser')
+const ErrorHandler = require('./error')
+const mergePkgConfig = require('./mergePkgConfig')
 
-exports.resolveArwenPath = function() {
-    return path.resolve(__dirname, '..', '..', '..')
+module.exports = {
+    openBrowser,
+    ErrorHandler,
+    mergePkgConfig
 }
-
-exports.resolveWorkPath = function() {
-    return process.cwd()
-}
-
-exports.openBrowser = openBrowser

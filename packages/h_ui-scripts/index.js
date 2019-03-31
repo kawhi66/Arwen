@@ -1,4 +1,6 @@
-const fs = require('fs-extra')
+const {
+    ErrorHandler
+} = require('@arwen/arwen-utils')
 
 module.exports = class Service {
     constructor() {
@@ -12,9 +14,8 @@ module.exports = class Service {
     run(task) {
         if (['serve', 'build'].includes(task)) {
             require(`./lib/${task}`)()
-        } else throw new Error({
-            code: 'INVALID_ARWEN_TASK',
-            message: 'invalid arwen task, you many wanna run arwen --help'
-        })
+        } else {
+            throw new ErrorHandler('INVALID_ARWEN_TASK')
+        }
     }
 }
