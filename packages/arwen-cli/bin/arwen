@@ -1,15 +1,25 @@
 #!/usr/bin/env node
 
+function requireRelativeModule(name) {
+    return require(require.resolve(`${name}`, {
+        paths: [
+            process.cwd()
+        ]
+    }))
+}
+
 const fs = require('fs-extra')
 const yargs = require('yargs')
+
 const {
     ErrorHandler
 } = require('@arwen/arwen-utils')
 
 yargs
     .command('$0', false, yargs => {}, argv => {
+        // TODO: show some interesting stuff
         console.log('hello arwen')
-    }) // this is a hidden command
+    })
     .command(require('../create'))
     .command(['serve', 'start', 'dev'], 'launch the server in development mode', yargs => {
         return yargs
@@ -26,15 +36,12 @@ yargs
                 type: 'string'
             })
     }, argv => {
-        process.env.ARWEN_HOST = argv.host
-        process.env.ARWEN_PORT = argv.port
-
-        const Service = require(`@arwen/${argv.type}-scripts`)
-        new Service().run('serve')
+        const Service = requireRelativeModule(`@arwen/${argv.type}-scripts`)
+        new Service(argv).run('serve')
     }, [verifyPkgConfig])
     .command(['build', 'pack'], 'compile and build', {}, argv => {
-        const Service = require(`@arwen/${argv.type}-scripts`)
-        new Service().run('build')
+        const Service = requireRelativeModule(`@arwen/${argv.type}-scripts`)
+        new Service(argv).run('build')
     }, [verifyPkgConfig])
     .command({
         command: 'test1',
