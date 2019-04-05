@@ -34,7 +34,8 @@ module.exports = class ErrorHandler {
 }
 
 const _ERR_CODES_ = {
+    UNKNOWN_ERROR: 'unknown error',
     INVALID_ARWEN_TYPE: 'invalid arwen type, this may not an arwen project',
     INVALID_ARWEN_TASK: 'invalid arwen task, you many wanna run arwen --help',
-    UNKNOWN_ERROR: 'unknown error'
+    INVALID_PORT: 'invalid port'
 }
