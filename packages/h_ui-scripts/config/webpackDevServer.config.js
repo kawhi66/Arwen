@@ -1,10 +1,22 @@
+const {
+    dev: {
+        assetsPublicPath
+    }
+} = require('./env.config.js')
+
 module.exports = {
     clientLogLevel: 'warning',
     compress: true,
+    // contentBase: false,
     historyApiFallback: true,
     hot: true,
-    host: '127.0.0.1',
-    port: '8099',
+    index: 'index.html',
     open: true,
-    publicPath: '/'
+    overlay: true,
+    publicPath: assetsPublicPath,
+    quiet: true,
+    // stats: 'errors-only',
+    watchOptions: {
+        poll: true
+    }
 }

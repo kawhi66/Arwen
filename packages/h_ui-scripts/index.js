@@ -1,7 +1,10 @@
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const notifier = require('node-notifier')
 const webpack = require('webpack')
 const createWebpackConfig = require('./config/webpack.config')
 const webpackDevServer = require('webpack-dev-server')
 const webpackDevServerConfig = require('./config/webpackDevServer.config')
+const portfinder = require('portfinder')
 
 const {
     openBrowser,
@@ -10,14 +13,10 @@ const {
 
 module.exports = class Service {
     constructor(argv) {
-        this.arwen_env = argv
         process.env.ARWEN_ENV = argv
+        this.arwen_env = argv
     }
 
-    /**
-     * @description run the task registered in the lib
-     * @param {String} task name
-     */
     run(task) {
         if (task === 'serve') {
             this.serve()
@@ -30,15 +29,49 @@ module.exports = class Service {
 
     serve() {
         const webpackConfig = createWebpackConfig('development')
-        const compiler = webpack(webpackConfig) // create compiler instance
-        const server = new webpackDevServer(compiler, webpackDevServerConfig) // create server
-        const {
-            host,
-            port
-        } = this.arwen_env
+        const host = this.arwen_env.host
 
-        server.listen(port, host, function() {
-            openBrowser(`http://${host}:${port}`)
+        // find an available port
+        portfinder.basePort = this.arwen_env.port
+        portfinder.getPort((err, port) => {
+            if (err) {
+                return new ErrorHandler('INVALID_PORT')
+            }
+
+            webpackConfig.plugins.push(new FriendlyErrorsWebpackPlugin({
+                compilationSuccessInfo: {
+                    messages: [
+                        `Your application is running here: http://${host}:${port}`
+                    ],
+                    notes: [
+                        'Note that the development build is not optimized',
+                        'To create a production build, run arwen build'
+                    ]
+                },
+                onErrors: function(severity, errors) {
+                    // You can listen to errors transformed and prioritized by the plugin
+                    // severity can be 'error' or 'warning'
+                    if (severity !== 'error') {
+                        return;
+                    }
+
+                    if (errors.length) {
+                        notifier.notify({
+                            title: 'compiler error',
+                            message: `${severity}: ${errors[0]['name']}`,
+                            subtitle: errors[0]['file'] || '',
+                            // icon: ICON // TODO: need a good icon
+                        })
+                    }
+                }
+            }))
+
+            const compiler = webpack(webpackConfig) // create compiler instance
+            const server = new webpackDevServer(compiler, webpackDevServerConfig) // create server
+            server.listen(port, host, function() {
+                console.log('Starting the development server...')
+                openBrowser(`http://${host}:${port}`)
+            })
         })
     }
 
