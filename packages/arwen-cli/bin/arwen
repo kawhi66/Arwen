@@ -23,14 +23,14 @@ yargs
     .command(require('../create'))
     .command(['serve', 'start', 'dev'], 'launch the server in development mode', yargs => {
         return yargs
-            .option('host', {
-                alias: 'h',
+            .option('h', {
+                alias: 'host',
                 default: 'localhost',
                 description: 'specify host',
                 type: 'string'
             })
-            .option('port', {
-                alias: 'p',
+            .option('p', {
+                alias: 'port',
                 default: '3000',
                 description: 'specify port',
                 type: 'string'
@@ -39,21 +39,32 @@ yargs
         const Service = requireRelativeModule(`@arwen/${argv.type}-scripts`)
         new Service(argv).run('serve')
     }, [verifyPkgConfig])
-    .command(['build', 'pack'], 'compile and build', {}, argv => {
+    .command(['build', 'release'], 'compile and build', yargs => {
+        const {
+            name,
+            version
+        } = fs.readJsonSync('./package.json')
+
+        return yargs
+            .option('debug', {
+                default: false,
+                description: 'turn on the source map in production',
+                type: 'boolean'
+            })
+            .option('package-name', {
+                default: `${name}.${version}.${new Date().getTime()}`,
+                description: 'specify zip package name',
+                type: 'string'
+            })
+            .option('p', {
+                alias: 'pack',
+                default: false,
+                description: 'to zip file',
+                type: 'boolean'
+            })
+    }, argv => {
         const Service = requireRelativeModule(`@arwen/${argv.type}-scripts`)
         new Service(argv).run('build')
-    }, [verifyPkgConfig])
-    .command({
-        command: 'test1',
-        description: false,
-        builder: {},
-        handler: argv => {
-            console.log(argv)
-        },
-        middle: [verifyPkgConfig] // WARNING: it won't work
-    })
-    .command('test2', false, {}, argv => {
-        console.log(argv)
     }, [verifyPkgConfig])
     // .middleware(verifyPkgConfig) // global middleware
     .usage('Usage: arwen <command> [options]')
@@ -67,6 +78,8 @@ yargs
             throw err
         }
     })
+    .detectLocale(false)
+    .wrap(120)
     .help()
     .argv
 
