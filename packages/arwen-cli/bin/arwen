@@ -10,18 +10,21 @@ function requireRelativeModule(name) {
 
 const fs = require('fs-extra')
 const yargs = require('yargs')
-
 const {
     ErrorHandler
 } = require('@arwen/arwen-utils')
 
+const create = require('../create')
+const deploy = require('../deploy')
+
 yargs
-    .command('$0', false, yargs => {}, argv => {
+    .command(create)
+    .command(deploy)
+    .command('$0', false, {}, function(argv) {
         // TODO: show some interesting stuff
         console.log('hello arwen')
     })
-    .command(require('../create'))
-    .command(['serve', 'start', 'dev'], 'launch the server in development mode', yargs => {
+    .command(['serve', 'start', 'dev'], 'launch the server in development mode', function(yargs) {
         return yargs
             .option('h', {
                 alias: 'host',
@@ -35,16 +38,11 @@ yargs
                 description: 'specify port',
                 type: 'string'
             })
-    }, argv => {
+    }, function(argv) {
         const Service = requireRelativeModule(`@arwen/${argv.type}-scripts`)
         new Service(argv).run('serve')
     }, [verifyPkgConfig])
-    .command(['build', 'release'], 'compile and build', yargs => {
-        const {
-            name,
-            version
-        } = fs.readJsonSync('./package.json')
-
+    .command(['build', 'release'], 'compile and build', function(yargs) {
         return yargs
             .option('debug', {
                 default: false,
@@ -52,7 +50,6 @@ yargs
                 type: 'boolean'
             })
             .option('package-name', {
-                default: `${name}.${version}.${new Date().getTime()}`,
                 description: 'specify zip package name',
                 type: 'string'
             })
@@ -62,18 +59,17 @@ yargs
                 description: 'to zip file',
                 type: 'boolean'
             })
-    }, argv => {
+    }, function(argv) {
         const Service = requireRelativeModule(`@arwen/${argv.type}-scripts`)
         new Service(argv).run('build')
     }, [verifyPkgConfig])
-    // .middleware(verifyPkgConfig) // global middleware
     .usage('Usage: arwen <command> [options]')
     .example('$0 create demo -t h_ui', 'generate h_ui project')
     .example('$0 serve', 'run the server for development environment')
     .example('$0 build', 'run the build for production environment')
     .epilog('https://kawhi.site')
     .alias('v', 'version')
-    .fail((msg, err, yargs) => {
+    .fail(function(msg, err, yargs) {
         if (err) {
             throw err
         }
@@ -90,21 +86,17 @@ yargs
  * @todo It doesn 't seem logical for a middleware
  */
 function verifyPkgConfig(argv) {
-    return fs.readJson('./package.json').then(({
-        arwen
-    }) => {
-        if (arwen && arwen.type) {
-            return {
-                ...arwen,
-                ...argv
-            }
+    return fs.readJson('./package.json').then(function(pkgConfig) {
+        if (pkgConfig.arwen && pkgConfig.arwen.type) {
+            return Object.assign({}, argv, pkgConfig.arwen)
         } else {
             throw new ErrorHandler('INVALID_ARWEN_TYPE')
         }
-    }).catch(err => {
+    }).catch(function(err) {
         if (!err.isArwen) {
             err = new ErrorHandler('UNKNOWN_ERROR')
         }
+
         console.error(`${err.code}: ${err.message}`)
         yargs.exit(1, err)
     })
