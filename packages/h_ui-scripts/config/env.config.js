@@ -40,7 +40,7 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: './',
 
-        productionSourceMap: false,
+        // productionSourceMap: false,
         devtool: '#source-map',
 
         // Gzip off by default as many popular static hosts such as
@@ -49,7 +49,7 @@ module.exports = {
         // npm install --save-dev compression-webpack-plugin
         productionGzip: true,
         productionGzipExtensions: ['js', 'css'],
-        productionToZip: true,
+        // productionToZip: true,
 
         // Run the build command with an extra argument to
         // View the bundle analyzer report after build finishes:

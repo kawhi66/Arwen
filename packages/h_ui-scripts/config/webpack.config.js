@@ -1,4 +1,5 @@
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
@@ -53,7 +54,7 @@ module.exports = function(webpackEnv) {
             filename: assetsPath('js/[name].[hash].js'),
             chunkFilename: assetsPath('js/[id].[hash].js')
         },
-        devtool: isProdCompile && envConfig.build.productionSourceMap ?
+        devtool: isProdCompile && process.ARWEN_ENV.debug ?
             envConfig.build.devtool : isDevCompile &&
             envConfig.dev.devtool,
         module: {
@@ -178,7 +179,12 @@ module.exports = function(webpackEnv) {
             new webpack.HotModuleReplacementPlugin(),
             // HMR shows correct file names in console on update.
             new webpack.NamedModulesPlugin()
-        ]),
+        ]).concat(isProdCompile && envConfig.build.productionGzip ? [
+            new CompressionWebpackPlugin({
+                test: new RegExp(`\\.(${envConfig.build.productionGzipExtensions.join('|')})$`),
+                threshold: 10240
+            })
+        ] : []),
         node: {
             // prevent webpack from injecting useless setImmediate polyfill because Vue
             // source contains it (although only uses it if it's native).

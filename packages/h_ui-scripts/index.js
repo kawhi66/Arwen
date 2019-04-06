@@ -13,7 +13,7 @@ const {
 
 module.exports = class Service {
     constructor(argv) {
-        process.env.ARWEN_ENV = argv
+        process.ARWEN_ENV = argv
         this.arwen_env = argv
     }
 
