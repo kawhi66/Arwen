@@ -17,19 +17,17 @@ exports.builder = yargs => {
     return yargs
         .options({
             path: {
-                // demandOption: true, // WARNING: not working
                 description: 'serve path',
                 type: 'string'
             },
-            p: {
-                alias: 'port',
+            port: {
+                alias: 'p',
                 default: '8080',
                 description: 'specify port',
                 type: 'string'
             },
-            s: {
-                alias: 'signal',
-                // choices: ['start', 'list', 'stop'], // WARNING: not working
+            signal: {
+                alias: 's',
                 default: 'start',
                 description: 'specify a signal',
                 type: 'string'
@@ -73,11 +71,18 @@ exports.handler = function(argv) {
                         if (one) {
                             console.log(
                                 '\n' +
-                                '   start ok\n' +
-                                `   it's running with pid ${one.process.pid}\n`
+                                `   deploy succeeded, it's running here http://localhost:${argv.port}\n` +
+                                '   try arwen deploy -s list to get more infomation' +
+                                '\n'
                             )
                         } else {
-                            console.error('start fail, something must be wrong')
+                            console.error(
+                                '\n' +
+                                `   I am sorry, you just trigger an unknown error\n` +
+                                `   please report here https://github.com/kawhi66/arwen/issues\n` +
+                                `   I will try to deal with it as soon as I can` +
+                                '\n'
+                            )
                         }
                     }
                 })
@@ -85,8 +90,8 @@ exports.handler = function(argv) {
         } else {
             console.log(
                 '\n' +
-                '   arwen now just support local deploy\n' +
-                '   and you must specify a path like arwen deploy --path ./build\n'
+                '   arwen now just support local deploy, and you must specify a explicit path' +
+                '\n'
             )
         }
     } else if (argv.signal === 'list') {
@@ -128,7 +133,11 @@ exports.handler = function(argv) {
 
                     console.table(appInfos)
                 } else {
-                    console.log('no available app')
+                    console.log(
+                        '\n' +
+                        'there are no available apps deployed, try arwen deploy [path] to start one' +
+                        '\n'
+                    )
                 }
             })
         })
@@ -150,12 +159,21 @@ exports.handler = function(argv) {
                         return console.error(err)
                     }
 
-                    console.log('stop ok')
+                    console.log(
+                        '\n' +
+                        '   stop succeeded, try arwen deploy [path] to redeploy one' +
+                        '\n'
+                    )
                 })
             })
         })
     } else {
-        const err = new ErrorHandler('INVALID_ARWEN_DEPLOY_SIGNAL')
-        console.error(`${err.code}: ${err.message}`)
+        const err = new ErrorHandler('INVALID_DEPLOY_SIGNAL')
+        console.error(
+            '\n' +
+            `   ${err.code}\n` +
+            `   ${err.message}` +
+            '\n'
+        )
     }
 }

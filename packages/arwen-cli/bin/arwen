@@ -1,103 +1,19 @@
 #!/usr/bin/env node
 
-function requireRelativeModule(name) {
-    return require(require.resolve(`${name}`, {
-        paths: [
-            process.cwd()
-        ]
-    }))
-}
-
-const fs = require('fs-extra')
-const yargs = require('yargs')
-const {
-    ErrorHandler
-} = require('@arwen/arwen-utils')
-
-const create = require('../create')
-const deploy = require('../deploy')
-
-yargs
-    .command(create)
-    .command(deploy)
+require('yargs')
     .command('$0', false, {}, function(argv) {
-        // TODO: show some interesting stuff
         console.log('hello arwen')
     })
-    .command(['serve', 'start', 'dev'], 'launch the server in development mode', function(yargs) {
-        return yargs
-            .option('h', {
-                alias: 'host',
-                default: 'localhost',
-                description: 'specify host',
-                type: 'string'
-            })
-            .option('p', {
-                alias: 'port',
-                default: '3000',
-                description: 'specify port',
-                type: 'string'
-            })
-    }, function(argv) {
-        const Service = requireRelativeModule(`@arwen/${argv.type}-scripts`)
-        new Service(argv).run('serve')
-    }, [verifyPkgConfig])
-    .command(['build', 'release'], 'compile and build', function(yargs) {
-        return yargs
-            .option('debug', {
-                default: false,
-                description: 'turn on the source map in production',
-                type: 'boolean'
-            })
-            .option('package-name', {
-                description: 'specify zip package name',
-                type: 'string'
-            })
-            .option('p', {
-                alias: 'pack',
-                default: false,
-                description: 'to zip file',
-                type: 'boolean'
-            })
-    }, function(argv) {
-        const Service = requireRelativeModule(`@arwen/${argv.type}-scripts`)
-        new Service(argv).run('build')
-    }, [verifyPkgConfig])
-    .usage('Usage: arwen <command> [options]')
-    .example('$0 create demo -t h_ui', 'generate h_ui project')
-    .example('$0 serve', 'run the server for development environment')
-    .example('$0 build', 'run the build for production environment')
-    .epilog('https://kawhi.site')
-    .alias('v', 'version')
-    .fail(function(msg, err, yargs) {
-        if (err) {
-            throw err
-        }
-    })
+    .usage('Usage: arwen <command> [option]')
+    .command(require('../scripts/create'))
+    .example('$0 create h_ui-demo')
+    .command(require('../scripts/serve'))
+    .example('$0 serve -h 127.0.0.1 -p 8080')
+    .command(require('../scripts/build'))
+    .example('$0 build --pack --package-name h_ui-demo')
+    .command(require('../scripts/deploy'))
+    .example('$0 deploy ./build -p 8080')
     .detectLocale(false)
     .wrap(120)
     .help()
     .argv
-
-/**
- * @description async middleware to verify if the current work directory is an valid an arwen project
- * @description it should only work for command serve and build
- * @todo if don't exit manually, the process won't be interruptted no matter what does this middleware returns
- * @todo It doesn 't seem logical for a middleware
- */
-function verifyPkgConfig(argv) {
-    return fs.readJson('./package.json').then(function(pkgConfig) {
-        if (pkgConfig.arwen && pkgConfig.arwen.type) {
-            return Object.assign({}, argv, pkgConfig.arwen)
-        } else {
-            throw new ErrorHandler('INVALID_ARWEN_TYPE')
-        }
-    }).catch(function(err) {
-        if (!err.isArwen) {
-            err = new ErrorHandler('UNKNOWN_ERROR')
-        }
-
-        console.error(`${err.code}: ${err.message}`)
-        yargs.exit(1, err)
-    })
-}

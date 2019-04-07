@@ -9,19 +9,16 @@ const {
 
 exports.command = ['create <name>', 'init']
 exports.description = 'generate the project based on template'
-exports.builder = {
-    name: {
-        alias: 'n',
-        default: 'arwen',
-        description: 'specify the project name',
-        type: 'string'
-    },
-    type: {
-        alias: 't',
-        default: 'h_ui',
-        description: 'specify the project type',
-        type: 'string'
-    }
+exports.builder = function(yargs) {
+    return yargs
+        .option({
+            name: {
+                alias: 'n',
+                default: 'arwen',
+                description: 'specify the project name',
+                type: 'string'
+            }
+        })
 }
 
 /**
@@ -38,7 +35,7 @@ exports.builder = {
  */
 exports.handler = function(argv) {
     const cwd = path.join(process.cwd(), argv.name)
-    const core = `@arwen/${argv.type}-scripts`
+    const core = '@arwen/h_ui-scripts'
 
     fs.ensureDir(cwd).then(() => {
         process.chdir(cwd) // change work directory
@@ -50,7 +47,7 @@ exports.handler = function(argv) {
                 // [core]: "^1.0.0"
             },
             arwen: {
-                type: argv.type // identify arwen project
+                type: 'h_ui' // identify arwen project
             }
         }, {
             spaces: '\t'
