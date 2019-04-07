@@ -1,8 +1,7 @@
-const path = require('path')
-const fs = require('fs-extra')
-const spawn = require('cross-spawn')
-
 const {
+    fse,
+    path,
+    spawn,
     ErrorHandler,
     mergePkgConfig
 } = require('@arwen/arwen-utils')
@@ -35,17 +34,12 @@ exports.builder = function(yargs) {
  */
 exports.handler = function(argv) {
     const cwd = path.join(process.cwd(), argv.name)
-    const core = '@arwen/h_ui-scripts'
 
-    fs.ensureDir(cwd).then(() => {
+    fse.ensureDir(cwd).then(() => {
         process.chdir(cwd) // change work directory
-        return fs.writeJson('./package.json', {
+        return fse.writeJson('./package.json', {
             name: argv.name,
             version: "0.0.1",
-            dependencies: {
-                // "@arwen/arwen-utils": "^1.0.0",
-                // [core]: "^1.0.0"
-            },
             arwen: {
                 type: 'h_ui' // identify arwen project
             }
@@ -54,9 +48,17 @@ exports.handler = function(argv) {
         })
     }).then(() => {
         return new Promise((resolve, reject) => {
-            const child = spawn('yarn', ['link', core, '@arwen/arwen-utils'], {
+            // const child = spawn('yarn', ['link', '@arwen/h_ui-scripts', '@arwen/arwen-utils'], {
+            //     stdio: 'inherit'
+            // }) // dev
+
+            const child = spawn('npm', [
+                'install', '@arwen/h_ui-scripts', '@arwen/arwen-utils',
+                '-d',
+                '--registry', 'http://registry.npm.taobao.org'
+            ], {
                 stdio: 'inherit'
-            }) // should run the install, but for now, let's just link it
+            }) // prod
 
             child.on('close', code => {
                 if (code !== 0) return reject()
@@ -64,33 +66,68 @@ exports.handler = function(argv) {
             })
         })
     }).then(() => {
-        return fs.copy(path.join(cwd, 'node_modules', core, 'template'), cwd) // copy template
+        return fse.copy(path.join(cwd, 'node_modules', '@arwen/h_ui-scripts', 'template'), cwd) // copy template
     }).then(() => {
-        return fs.writeJson('./package.json', mergePkgConfig('./package.json', './pkgConfig.json'), {
+        return fse.writeJson('./package.json', mergePkgConfig('./package.json', './pkgConfig.json'), {
             spaces: '\t'
         })
     }).then(() => {
         return new Promise((resolve, reject) => {
-            const child = spawn('yarn', ['--registry', 'http://registry.npm.taobao.org'], {
-                stdio: 'inherit'
-            })
+            fse.readJson('./package.json', function(err, pkgConfig) {
+                if (err) {
+                    return reject(err)
+                }
 
-            child.on('close', code => {
-                if (code !== 0) return reject()
-                resolve()
+                let projectDeps = []
+
+                for (let i = 0; i < pkgConfig.dependencies.length; i++) {
+                    if (['@arwen/h_ui-scripts', '@arwen/arwen-utils'].includes(pkgConfig.dependencies[i])) {
+                        continue
+                    } else {
+                        projectDeps.push(pkgConfig.dependencies[i])
+                    }
+                }
+
+                const child = spawn('npm', [
+                    'install', ...projectDeps,
+                    '-d',
+                    '--registry', 'http://registry.npm.taobao.org'
+                ], {
+                    stdio: 'inherit'
+                })
+
+                child.on('close', code => {
+                    if (code !== 0) return reject()
+                    resolve()
+                })
             })
         })
     }).then(() => {
         try {
-            fs.remove('./pkgConfig.json')
+            fse.remove('./pkgConfig.json')
         } catch (e) {} finally {
             console.log("create ok")
         }
     }).catch(err => {
-        if (!err.isArwen) {
-            err = new ErrorHandler('UNKNOWN_ERROR')
+        if (err.is_arwen) {
+            if (err.code === 'UNKNOWN_ERROR') {
+                console.error(
+                    '\n' +
+                    `   I am sorry, you just trigger an unknown error\n` +
+                    `   please report here https://github.com/kawhi66/arwen/issues\n` +
+                    `   I will try to deal with it as soon as I can` +
+                    '\n'
+                )
+            } else {
+                console.error(
+                    '\n' +
+                    `   ${err.code}\n` +
+                    `   ${err.message}` +
+                    '\n'
+                )
+            }
+        } else {
+            console.error(err)
         }
-        console.error(`${err.code}: ${err.message}`)
-        yargs.exit(1, err)
     })
 }
