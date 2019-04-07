@@ -22,8 +22,6 @@ module.exports = class Service {
             this.serve()
         } else if (task === 'build') {
             this.build()
-        } else {
-            throw new ErrorHandler('INVALID_ARWEN_TASK')
         }
     }
 
