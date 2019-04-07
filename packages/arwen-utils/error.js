@@ -37,5 +37,6 @@ const _ERR_CODES_ = {
     UNKNOWN_ERROR: 'unknown error',
     INVALID_ARWEN_TYPE: 'invalid arwen type, this may not an arwen project',
     INVALID_ARWEN_TASK: 'invalid arwen task, you many wanna run arwen --help',
+    INVALID_ARWEN_DEPLOY_SIGNAL: 'invalid arwen deploy signal, you may wanna run arwen deploy --help',
     INVALID_PORT: 'invalid port'
 }
