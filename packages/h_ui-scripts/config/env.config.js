@@ -60,7 +60,5 @@ module.exports = {
 }
 
 function relativePath(_path) {
-    // TODO: need a global environment management
-    // return path.resolve(__dirname, '../../../', _path || '') // prod
-    return path.resolve(process.cwd(), _path || '') // dev
+    return path.resolve(process.cwd(), _path || '')
 }
