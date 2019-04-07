@@ -30,7 +30,7 @@ module.exports = function(webpackEnv) {
             ]
 
             if (isDevCompile) {
-                entries.concat([
+                return entries.concat([
                     // Include an alternative client for WebpackDevServer. A client's job is to
                     // connect to WebpackDevServer by a socket and get notified about changes.
                     // When you save a file, the client will either apply hot updates (in case
@@ -42,9 +42,7 @@ module.exports = function(webpackEnv) {
                     require.resolve('webpack-dev-server/client') + '?/',
                     require.resolve('webpack/hot/dev-server')
                 ])
-            }
-
-            return entries
+            } else return entries
         },
         output: {
             path: envConfig.build.assetsRoot,
