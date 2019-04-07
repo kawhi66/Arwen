@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+require('yargs')
+    .command('$0', false, {}, function(argv) {
+        console.log('hello arwen')
+    })
+    .usage('Usage: arwen <command> [option]')
+    .command(require('../scripts/create'))
+    .example('$0 create h_ui-demo')
+    .command(require('../scripts/serve'))
+    .example('$0 serve -h 127.0.0.1 -p 8080')
+    .command(require('../scripts/build'))
+    .example('$0 build --pack --package-name h_ui-demo')
+    .command(require('../scripts/deploy'))
+    .example('$0 deploy ./build -p 8080')
+    .detectLocale(false)
+    .wrap(120)
+    .help()
+    .argv

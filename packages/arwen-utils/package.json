@@ -1,0 +1,14 @@
+{
+  "name": "@arwen/arwen-utils",
+  "version": "0.0.1",
+  "description": "arwen-utils",
+  "main": "index.js",
+  "repository": "https://github.com/kawhi66/arwen",
+  "author": "kawhi.site",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^7.0.1",
+    "merge": "^1.2.1",
+    "react-dev-utils": "^8.0.0"
+  }
+}
