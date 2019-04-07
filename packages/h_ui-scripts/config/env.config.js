@@ -60,5 +60,6 @@ module.exports = {
 }
 
 function relativePath(_path) {
-    return path.resolve(process.cwd(), _path || '')
+    return path.resolve(__dirname, '../../../', _path || '') // prod
+    // return path.resolve(process.cwd(), _path || '') // dev
 }
