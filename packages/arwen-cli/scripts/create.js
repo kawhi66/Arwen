@@ -48,17 +48,17 @@ exports.handler = function(argv) {
         })
     }).then(() => {
         return new Promise((resolve, reject) => {
-            // const child = spawn('yarn', ['link', '@arwen/h_ui-scripts', '@arwen/arwen-utils'], {
-            //     stdio: 'inherit'
-            // }) // dev
-
-            const child = spawn('npm', [
-                'install', '@arwen/h_ui-scripts', '@arwen/arwen-utils',
-                '-d',
-                '--registry', 'http://registry.npm.taobao.org'
-            ], {
+            const child = spawn('yarn', ['link', '@arwen/h_ui-scripts'], {
                 stdio: 'inherit'
-            }) // prod
+            }) // dev
+
+            // const child = spawn('yarn', [
+            //     'add', '@arwen/h_ui-scripts',
+            //     '--dev',
+            //     '--registry', 'http://registry.npm.taobao.org'
+            // ], {
+            //     stdio: 'inherit'
+            // }) // prod
 
             child.on('close', code => {
                 if (code !== 0) return reject()
@@ -78,19 +78,18 @@ exports.handler = function(argv) {
                     return reject(err)
                 }
 
-                let projectDeps = []
+                // let projectDeps = []
+                //
+                // for (let i = 0; i < pkgConfig.dependencies.length; i++) {
+                //     if (['@arwen/h_ui-scripts', '@arwen/arwen-utils'].includes(pkgConfig.dependencies[i])) {
+                //         continue
+                //     } else {
+                //         projectDeps.push(pkgConfig.dependencies[i])
+                //     }
+                // }
 
-                for (let i = 0; i < pkgConfig.dependencies.length; i++) {
-                    if (['@arwen/h_ui-scripts', '@arwen/arwen-utils'].includes(pkgConfig.dependencies[i])) {
-                        continue
-                    } else {
-                        projectDeps.push(pkgConfig.dependencies[i])
-                    }
-                }
-
-                const child = spawn('npm', [
-                    'install', ...projectDeps,
-                    '-d',
+                const child = spawn('yarn', [
+                    // 'add', ...projectDeps,
                     '--registry', 'http://registry.npm.taobao.org'
                 ], {
                     stdio: 'inherit'

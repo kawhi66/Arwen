@@ -2,9 +2,8 @@ const path = require('path')
 
 module.exports = {
     directory: {
-        // h_ui-scripts's core dependencies
+        // mainDeps: relativePath('node_modules'),
         mainDeps: path.resolve(__dirname, '../', 'node_modules'),
-        // h_ui project's custom dependencies, and it should be the top priority
         projectDeps: relativePath('node_modules'),
         root: relativePath(),
         src: relativePath('src')
@@ -60,6 +59,6 @@ module.exports = {
 }
 
 function relativePath(_path) {
-    return path.resolve(__dirname, '../../../', _path || '') // prod
-    // return path.resolve(process.cwd(), _path || '') // dev
+    // return path.resolve(__dirname, '../../../', _path || '') // prod
+    return path.resolve(process.cwd(), _path || '') // dev
 }
