@@ -1,8 +1,17 @@
 #!/usr/bin/env node
 
-require('yargs')
+const chalk = require('chalk')
+const logo = require('../lib/logo')
+const yargs = require('yargs')
+
+yargs
     .command('$0', false, {}, function(argv) {
-        console.log('hello arwen')
+        console.log(logo)
+        console.log(`   Arwen has some interesting abilities that could be used for`)
+        console.log(`   project management of frontend. Typically, Arwen now could completely`)
+        console.log(`   handle a vue project base on h_ui component library. Get started`)
+        console.log(`   with a simple command ${chalk.green('arwen create h_ui-demo')}\n`)
+        console.log(`   If you need more help, run ${chalk.green('arwen --help')}\n`)
     })
     .usage('Usage: arwen <command> [option]')
     .command(require('../scripts/create'))
