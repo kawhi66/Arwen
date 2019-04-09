@@ -1,6 +1,6 @@
 {
   "name": "@arwen/arwen-utils",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "arwen-utils",
   "main": "index.js",
   "repository": "https://github.com/kawhi66/arwen",
@@ -11,6 +11,7 @@
     "cross-spawn": "^6.0.5",
     "fs-extra": "^7.0.1",
     "merge": "^1.2.1",
-    "react-dev-utils": "^8.0.0"
+    "react-dev-utils": "^8.0.0",
+    "semver": "^6.0.0"
   }
 }
