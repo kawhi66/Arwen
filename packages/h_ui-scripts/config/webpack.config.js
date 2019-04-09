@@ -127,7 +127,7 @@ module.exports = function(webpackEnv) {
             // make sure projectDeps is top priority
             modules: [envConfig.directory.projectDeps, envConfig.directory.mainDeps],
             alias: {
-                'vue$': path.resolve(envConfig.directory.mainDeps, 'vue/dist/vue.esm'),
+                'vue$': path.resolve(envConfig.directory.projectDeps, 'vue/dist/vue.esm'),
                 '@': envConfig.directory.src
             }
         },

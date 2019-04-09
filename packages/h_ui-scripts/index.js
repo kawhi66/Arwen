@@ -54,6 +54,8 @@ module.exports = class Service {
                     // severity can be 'error' or 'warning'
                     if (severity !== 'error') {
                         return;
+                    } else {
+                        console.error(errors)
                     }
 
                     if (errors.length) {
