@@ -1,7 +1,7 @@
-const chalk = require('chalk')
 const path = require('path')
 const {
-    fse
+    chalk,
+    fse,
 } = require('@arwen/arwen-utils')
 
 const version = fse.readJsonSync(path.resolve(__dirname, '../package.json')).version

@@ -1,6 +1,7 @@
+const path = require('path')
 const {
+    chalk,
     fse,
-    path,
     spawn,
     ErrorHandler,
     mergePkgConfig
