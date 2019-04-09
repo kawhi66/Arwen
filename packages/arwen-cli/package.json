@@ -1,6 +1,6 @@
 {
     "name": "@arwen/arwen-cli",
-    "version": "0.0.4",
+    "version": "0.0.8",
     "description": "arwen-cli",
     "main": "index.js",
     "bin": {
@@ -10,7 +10,7 @@
     "author": "kawhi.site",
     "license": "MIT",
     "dependencies": {
-        "@arwen/arwen-utils": "^0.0.2",
+        "@arwen/arwen-utils": "^0.0.4",
         "compression": "^1.7.4",
         "express": "^4.16.4",
         "pm2": "^3.4.1",

@@ -26,6 +26,7 @@ yargs
     .example('$0 build --pack --package-name h_ui-demo')
     .command(require('../scripts/deploy'))
     .example('$0 deploy ./build -p 8080')
+    .epilogue(`https://kawhi.site\n`)
     .detectLocale(false)
     .wrap(120)
     .help()

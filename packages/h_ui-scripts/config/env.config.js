@@ -2,8 +2,8 @@ const path = require('path')
 
 module.exports = {
     directory: {
-        // mainDeps: relativePath('node_modules'),
-        mainDeps: path.resolve(__dirname, '../', 'node_modules'),
+        mainDeps: process.env.ARWEN_ENV === 'development' ?
+            path.resolve(__dirname, '../', 'node_modules') : relativePath('node_modules'),
         projectDeps: relativePath('node_modules'),
         root: relativePath(),
         src: relativePath('src')
@@ -59,6 +59,5 @@ module.exports = {
 }
 
 function relativePath(_path) {
-    // return path.resolve(__dirname, '../../../', _path || '') // prod
-    return path.resolve(process.cwd(), _path || '') // dev
+    return path.resolve(process.cwd(), _path || '')
 }

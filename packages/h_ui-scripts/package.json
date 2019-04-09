@@ -1,12 +1,13 @@
 {
   "name": "@arwen/h_ui-scripts",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "h_ui-scripts",
   "main": "index.js",
   "repository": "https://github.com/kawhi66/arwen",
   "author": "kawhi.site",
   "license": "MIT",
   "dependencies": {
+    "@arwen/arwen-utils": "^0.0.4",
     "@babel/core": "^7.4.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.4.0",
