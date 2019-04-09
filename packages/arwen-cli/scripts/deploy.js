@@ -46,7 +46,7 @@ exports.handler = function(argv) {
                     return console.error(err)
                 }
 
-                pm2.start(path.resolve(__dirname, 'lib/deploy.local.js'), {
+                pm2.start(path.resolve(__dirname, '../lib/deploy.local.js'), {
                     name: argv.path || '',
                     env: {
                         ARWEN_DEPLOY_PATH: argv.path,
