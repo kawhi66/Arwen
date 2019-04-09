@@ -4,4 +4,4 @@
 
 Get started with a simple command `arwen create h_ui-demo`.  
 
-Need more help, try `arwen --help`
+Need more help, try `arwen --help`.
