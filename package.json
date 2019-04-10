@@ -3,7 +3,10 @@
     "version": "0.0.1",
     "main": "index.js",
     "scripts": {
-        "test:create": "node ./test/create.test.js"
+        "test:create": "node ./test/create.test.js",
+        "test:serve": "node ./test/serve.test.js",
+        "test:build": "node ./test/build.test.js",
+        "test:deploy": "node ./test/deploy.test.js"
     },
     "repository": {
         "type": "git",

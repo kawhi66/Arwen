@@ -1,14 +1,14 @@
+const bin = require('./config.test.js').bin
 const fse = require('@arwen/arwen-utils').fse
 const path = require('path')
 const spawn = require('@arwen/arwen-utils').spawn
-const binPath = path.resolve(__dirname, '../', 'packages/arwen-cli/bin/arwen')
-const testDirPath = path.normalize('/Users/kawhi/Desktop/Projects/tryarwen')
-const testProject = 'h_ui-demo'
+const testDir = require('./config.test.js').testDir
+const testProject = require('./config.test.js').testProject
 
-process.chdir(testDirPath)
-fse.emptyDirSync(path.resolve(testDirPath, testProject))
+process.chdir(testDir)
+fse.emptyDirSync(path.resolve(testDir, testProject))
 
-const child = spawn('node', [binPath, 'create', testProject], {
+const child = spawn('node', [bin, 'create', testProject], {
     stdio: 'inherit'
 })
 child.on('message', function(message) {
