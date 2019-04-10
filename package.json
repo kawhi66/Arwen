@@ -1,29 +1,25 @@
 {
-  "name": "arwen",
-  "version": "0.0.1",
-  "description": "simplified front-end engineering scaffold based on the lighting (https://www.npmjs.com/package/lighting) ",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "bin": {
-    "arwen": "./bin/arwen"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kawhi66/arwen.git"
-  },
-  "keywords": [
-    "arwen",
-    "simplified-light",
-    "vue",
-    "light"
-  ],
-  "author": "https://kawhi.site",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kawhi66/arwen.git/issues"
-  },
-  "homepage": "https://github.com/kawhi66/arwen.git#readme",
-  "dependencies": {}
+    "name": "arwen",
+    "version": "0.0.1",
+    "main": "index.js",
+    "scripts": {
+        "test:create": "node ./test/create.test.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kawhi66/arwen.git"
+    },
+    "keywords": [
+        "arwen",
+        "vue"
+    ],
+    "author": "https://kawhi.site",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/kawhi66/arwen.git/issues"
+    },
+    "homepage": "https://github.com/kawhi66/arwen.git#readme",
+    "dependencies": {
+        "@arwen/arwen-utils": "^0.0.4"
+    }
 }
