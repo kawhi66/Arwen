@@ -23,11 +23,11 @@ exports.builder = function(yargs) {
 
 exports.handler = function(argv) {
     const cwd = path.join(process.cwd(), argv.name)
-    const step1 = ora(`Initializing the project ${chalk.green(argv.name)}.`)
-    const step2 = ora(`Installing development dependencies, this is gonna take a while.`)
-    const step3 = ora('Loading template files.')
-    const step4 = ora('Installing runtime dependencies.')
-    const step5 = ora(`Project ${chalk.green(argv.name)} creation successful.\n`)
+    const step1 = ora(`Initializing the project ${chalk.green(argv.name)}`)
+    const step2 = ora(`Installing development dependencies, this is gonna take a while`)
+    const step3 = ora('Loading template files')
+    const step4 = ora('Installing runtime dependencies')
+    const step5 = ora(`Project ${chalk.green(argv.name)} creation successful\n`)
     let whereami = step1
 
     useYarn().then(ok => {
