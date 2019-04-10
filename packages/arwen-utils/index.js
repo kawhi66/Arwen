@@ -1,6 +1,7 @@
 const chalk = require('chalk')
 const fse = require('fs-extra')
 const openBrowser = require('react-dev-utils/openBrowser')
+const ora = require('ora')
 const semver = require('semver')
 const spawn = require('cross-spawn')
 
@@ -11,6 +12,7 @@ module.exports = {
     chalk,
     fse,
     openBrowser,
+    ora,
     semver,
     spawn,
     ErrorHandler,
