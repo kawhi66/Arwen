@@ -12,6 +12,7 @@ fse.pathExists(path.resolve(testDir, testProject), function(err, exists) {
 
     if (exists) {
         process.chdir(path.resolve(testDir, testProject))
+        process.env.ARWEN_ENV = 'development'
 
         const child = spawn('node', [bin, 'serve'], {
             stdio: 'inherit'

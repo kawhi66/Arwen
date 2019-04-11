@@ -5,8 +5,9 @@ const spawn = require('@arwen/arwen-utils').spawn
 const testDir = require('./config.test.js').testDir
 const testProject = require('./config.test.js').testProject
 
-process.chdir(testDir)
 fse.emptyDirSync(path.resolve(testDir, testProject))
+process.chdir(testDir)
+process.env.ARWEN_ENV = 'development'
 
 const child = spawn('node', [bin, 'create', testProject], {
     stdio: 'inherit'

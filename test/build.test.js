@@ -12,8 +12,9 @@ fse.pathExists(path.resolve(testDir, testProject), function(err, exists) {
 
     if (exists) {
         process.chdir(path.resolve(testDir, testProject))
+        process.env.ARWEN_ENV = 'development'
 
-        const child = spawn('node', [bin, 'build'], {
+        const child = spawn('node', [bin, 'build', '--pack'], {
             stdio: 'inherit'
         })
         child.on('message', function(message) {
