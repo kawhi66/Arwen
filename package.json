@@ -22,7 +22,7 @@
         "url": "https://github.com/kawhi66/arwen.git/issues"
     },
     "homepage": "https://github.com/kawhi66/arwen.git#readme",
-    "dependencies": {
+    "devDependencies": {
         "@arwen/arwen-utils": "^0.0.4"
     }
 }
