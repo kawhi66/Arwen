@@ -1,6 +1,8 @@
 const path = require('path')
 const pm2 = require('pm2')
 const {
+    chalk,
+    ora,
     ErrorHandler
 } = require('@arwen/arwen-utils')
 
@@ -39,8 +41,7 @@ exports.handler = function(argv) {
     // TODO: not just start, restart, stop, list, log(clean, tail)
     // TODO: how to stop specified process
     if (argv.signal === 'start') {
-        // path must be set when start
-        if (argv.path) {
+        if (argv.path) { // path must be set when start
             pm2.connect(function(err) {
                 if (err) {
                     return console.error(err)
@@ -69,30 +70,14 @@ exports.handler = function(argv) {
                         })
 
                         if (one) {
-                            console.log(
-                                '\n' +
-                                `   deploy succeeded, it's running here http://localhost:${argv.port}\n` +
-                                '   try arwen deploy -s list to get more infomation' +
-                                '\n'
-                            )
-                        } else {
-                            console.error(
-                                '\n' +
-                                `   I am sorry, you just trigger an unknown error\n` +
-                                `   please report here https://github.com/kawhi66/arwen/issues\n` +
-                                `   I will try to deal with it as soon as I can` +
-                                '\n'
-                            )
+                            ora(`Deploy succeed, it is running here ${chalk.green('http://localhost:' + argv.port)}.`).succeed()
+                            ora(`If you need more infomation about apps running locally, try ${chalk.green('arwen deploy -s list')}.\n`).info()
                         }
                     }
                 })
             })
         } else {
-            console.log(
-                '\n' +
-                '   arwen now just support local deploy, and you must specify a explicit path' +
-                '\n'
-            )
+            ora(`For now, arwen only support local deployment. Please specify a explicit path like ${chalk.green('arwen deploy --path ./build')}.\n`).fail()
         }
     } else if (argv.signal === 'list') {
         pm2.connect(function(err) {
@@ -133,11 +118,7 @@ exports.handler = function(argv) {
 
                     console.table(appInfos)
                 } else {
-                    console.log(
-                        '\n' +
-                        'there are no available apps deployed, try arwen deploy [path] to start one' +
-                        '\n'
-                    )
+                    ora(`There aren't apps deployed locally. If you need help, try ${chalk.green('arwen deploy --help')}.\n`).info()
                 }
             })
         })
@@ -159,11 +140,7 @@ exports.handler = function(argv) {
                         return console.error(err)
                     }
 
-                    console.log(
-                        '\n' +
-                        '   stop succeeded, try arwen deploy [path] to redeploy one' +
-                        '\n'
-                    )
+                    ora('Stop succeed.\n').succeed()
                 })
             })
         })
