@@ -1,3 +1,4 @@
+const inquirer = require('inquirer')
 const path = require('path')
 const pm2 = require('pm2')
 const {
@@ -32,6 +33,10 @@ exports.builder = yargs => {
                 alias: 's',
                 default: 'start',
                 description: 'specify a signal',
+                type: 'string'
+            },
+            id: {
+                description: 'specify an id',
                 type: 'string'
             }
         })
@@ -70,14 +75,15 @@ exports.handler = function(argv) {
                         })
 
                         if (one) {
-                            ora(`Deploy succeed, it is running here ${chalk.green('http://localhost:' + argv.port)}.`).succeed()
+                            ora(`Deploy succeed, it is running here ${chalk.green('http://localhost:' + argv.port)}.\n`).succeed()
+                            ora(`The app id is ${chalk.green(one.pm2_env.pm_id)}, you may need it to stop later.`).info()
                             ora(`If you need more infomation about apps running locally, try ${chalk.green('arwen deploy -s list')}.\n`).info()
                         }
                     }
                 })
             })
         } else {
-            ora(`For now, arwen only support local deployment. Please specify a explicit path like ${chalk.green('arwen deploy --path ./build')}.\n`).fail()
+            ora(`For now, arwen only support local deployment. Please specify an explicit path like ${chalk.green('arwen deploy --path ./build')}.\n`).fail()
         }
     } else if (argv.signal === 'list') {
         pm2.connect(function(err) {
@@ -100,6 +106,7 @@ exports.handler = function(argv) {
                             pm2_env: {
                                 ARWEN_DEPLOY_PATH,
                                 ARWEN_DEPLOY_PORT,
+                                pm_id,
                                 status,
                                 created_at
                             }
@@ -107,6 +114,7 @@ exports.handler = function(argv) {
 
                         return {
                             name,
+                            id: pm_id,
                             pid,
                             status,
                             path: ARWEN_DEPLOY_PATH,
@@ -118,7 +126,7 @@ exports.handler = function(argv) {
 
                     console.table(appInfos)
                 } else {
-                    ora(`There aren't apps deployed locally. If you need help, try ${chalk.green('arwen deploy --help')}.\n`).info()
+                    ora(`There are not apps deployed locally. If you need help, try ${chalk.green('arwen deploy --help')}.\n`).info()
                 }
             })
         })
@@ -128,21 +136,43 @@ exports.handler = function(argv) {
                 return console.error(err)
             }
 
-            pm2.stop('all', function(err, proc) {
-                if (err) {
-                    return console.error(err)
-                }
-
-                pm2.delete('all', function(err, proc) {
-                    pm2.disconnect()
-
+            if (argv.id) {
+                pm2.stop('argv.id', function(err, proc) {
                     if (err) {
                         return console.error(err)
                     }
 
-                    ora('Stop succeed.\n').succeed()
+                    pm2.delete('argv.id', function(err, proc) {
+                        pm2.disconnect()
+
+                        if (err) {
+                            return console.error(err)
+                        }
+
+                        ora('Stop succeed.\n').succeed()
+                    })
                 })
-            })
+            } else {
+                ora('Specifying an explicit app id is highly recommended, if not, all apps running locally will be destroyed.').warn()
+                inquirer.prompt([{
+                    type: 'confirm',
+                    name: 'stopAll',
+                    message: `Sure you wanna do this ?`,
+                    default: false
+                }]).then(answers => {
+                    if (answers.stopAll) {
+                        pm2.stop('all', function(err, proc) {
+                            pm2.delete('all', function(err, proc) {
+                                pm2.disconnect()
+                                ora('Stop succeed.\n').succeed()
+                            })
+                        })
+                    } else {
+                        pm2.disconnect()
+                        ora(`If you have trouble getting id, running ${chalk.green('arwen deploy -s list')} to get more detail infomation.\n`).info()
+                    }
+                })
+            }
         })
     } else {
         const err = new ErrorHandler('INVALID_DEPLOY_SIGNAL')
