@@ -23,6 +23,7 @@
     },
     "homepage": "https://github.com/kawhi66/arwen.git#readme",
     "devDependencies": {
-        "@arwen/arwen-utils": "^0.0.4"
+        "@arwen/arwen-utils": "^0.0.4",
+        "lerna": "^3.13.2"
     }
 }
