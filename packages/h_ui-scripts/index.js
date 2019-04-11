@@ -4,13 +4,14 @@ const webpack = require('webpack')
 const createWebpackConfig = require('./config/webpack.config')
 const webpackDevServer = require('webpack-dev-server')
 const webpackDevServerConfig = require('./config/webpackDevServer.config')
-const archiver = require('archiver');
-const ora = require('ora')
+const archiver = require('archiver')
 const portfinder = require('portfinder')
 
 const {
+    chalk,
     fse,
     openBrowser,
+    ora,
     ErrorHandler
 } = require('@arwen/arwen-utils')
 
@@ -31,6 +32,7 @@ module.exports = class Service {
     serve() {
         const webpackConfig = createWebpackConfig('development')
         const host = this.arwen_env.host
+        const launch = ora('The development server is launching, browser shoube open automatically')
 
         // find an available port
         portfinder.basePort = this.arwen_env.port
@@ -41,38 +43,28 @@ module.exports = class Service {
 
             webpackConfig.plugins.push(new FriendlyErrorsWebpackPlugin({
                 compilationSuccessInfo: {
-                    messages: [
-                        `Your application is running here: http://${host}:${port}`
-                    ],
-                    notes: [
-                        'Note that the development build is not optimized',
-                        'To create a production build, run arwen build'
-                    ]
+                    messages: [`Your application is running here: http://${host}:${port}`],
+                    notes: [`Note that the development build is not optimized. To create a production build, run ${chalk.green('arwen build')}`]
                 },
                 onErrors: function(severity, errors) {
                     // You can listen to errors transformed and prioritized by the plugin
                     // severity can be 'error' or 'warning'
-                    if (severity !== 'error') {
-                        return;
-                    } else {
-                        // console.error(errors)
-                    }
 
-                    if (errors.length) {
-                        notifier.notify({
-                            title: 'compiler error',
-                            message: `${severity}: ${errors[0]['name']}`,
-                            subtitle: errors[0]['file'] || '',
-                            // icon: ICON // TODO: need a good icon
-                        })
-                    }
+                    // if (errors.length) {
+                    //     notifier.notify({
+                    //         title: 'compiler error',
+                    //         message: `${severity}: ${errors[0]['name']}`,
+                    //         subtitle: errors[0]['file'] || '',
+                    //         // icon: ICON
+                    //     })
+                    // }
                 }
             }))
 
             const compiler = webpack(webpackConfig) // create compiler instance
-            const server = new webpackDevServer(compiler, webpackDevServerConfig) // create server
+            const server = new webpackDevServer(compiler, webpackDevServerConfig) // create development server
             server.listen(port, host, function() {
-                console.log('Starting the development server...')
+                launch.info()
                 openBrowser(`http://${host}:${port}`)
             })
         })
@@ -81,12 +73,13 @@ module.exports = class Service {
     build() {
         const arwen_env = this.arwen_env
         const webpackConfig = createWebpackConfig('production')
-        const buildSpinner = ora('Building for production...')
-        const packSpinner = ora('packaging for zip...')
+        const build = ora('Building for production, this is gonna take a while')
+        const pack = ora('Compressing into a zip file')
         const cb = function(err, stats) {
-            buildSpinner.stop()
-
             if (err) {
+                build.fail('Build fail')
+
+                console.error()
                 console.error(err.stack || err)
                 err.details && console.error(err.details)
 
@@ -94,15 +87,17 @@ module.exports = class Service {
             }
 
             if (stats.hasErrors()) {
-                return console.error(stats.toJson().errors)
+                build.fail('Build fail')
+
+                console.error()
+                stats.toJson().errors.map(function(error) {
+                    console.error(error)
+                })
+
+                return false
             }
 
-            console.log(
-                '\n' +
-                '   Build complete.\n' +
-                '   Tip: try arwen deploy ./build' +
-                '\n'
-            )
+            build.succeed('Build succeed')
 
             if (arwen_env.pack) {
                 let packageName
@@ -113,7 +108,7 @@ module.exports = class Service {
                     packageName = fse.readJsonSync('./package.json').name
                 }
 
-                packSpinner.start()
+                pack.start()
                 const output = fse.createWriteStream(`./${packageName}.${new Date().getTime()}.zip`)
                 const archive = archiver('zip', {
                     zlib: {
@@ -124,13 +119,15 @@ module.exports = class Service {
                 // listen for all archive data to be written
                 // 'close' event is fired only when a file descriptor is involved
                 output.on('close', function() {
-                    packSpinner.stop()
+                    pack.succeed('Pack succeed')
                 })
 
                 // good practice to catch this error explicitly
                 archive.on('error', function(err) {
-                    packSpinner.stop()
-                    throw err
+                    pack.fail('Pack fail')
+                    console.error()
+                    console.error(err.stack || err)
+                    err.details && console.error(err.details)
                 })
 
                 // pipe archive data to the file
@@ -145,7 +142,7 @@ module.exports = class Service {
             }
         }
 
-        buildSpinner.start()
+        build.start()
         webpack(webpackConfig).run(cb)
     }
 }

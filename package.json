@@ -1,6 +1,5 @@
 {
-    "name": "arwen",
-    "version": "0.0.1",
+    "private": true,
     "main": "index.js",
     "scripts": {
         "test:create": "node ./test/create.test.js",
@@ -8,22 +7,10 @@
         "test:build": "node ./test/build.test.js",
         "test:deploy": "node ./test/deploy.test.js"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/kawhi66/arwen.git"
-    },
-    "keywords": [
-        "arwen",
-        "vue"
-    ],
-    "author": "https://kawhi.site",
     "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/kawhi66/arwen.git/issues"
-    },
-    "homepage": "https://github.com/kawhi66/arwen.git#readme",
     "devDependencies": {
         "@arwen/arwen-utils": "^0.0.4",
+        "jest": "^24.7.1",
         "lerna": "^3.13.2"
     }
 }

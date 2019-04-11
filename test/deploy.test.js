@@ -13,7 +13,7 @@ fse.pathExists(path.resolve(testDir, testProject, 'build'), function(err, exists
     if (exists) {
         process.chdir(path.resolve(testDir, testProject))
 
-        const child = spawn('node', [bin, 'deploy', '-s', 'list'], {
+        const child = spawn('node', [bin, 'deploy', '-s', 'stop'], {
             stdio: 'inherit'
         })
         child.on('message', function(message) {
