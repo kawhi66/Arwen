@@ -46,7 +46,7 @@ exports.handler = function(argv) {
                             fse.emptyDirSync(workDir)
                             return resolve()
                         } else {
-                            ora(`Project ${chalk.green(argv.name)} ceation failed. Please try other project names.\n`).fail()
+                            ora(`Project ${chalk.green(argv.name)} creation failed. Please try other project names.\n`).fail()
                             return reject()
                         }
                     })
