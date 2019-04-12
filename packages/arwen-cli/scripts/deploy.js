@@ -15,28 +15,24 @@ const {
 // WARNING: obviously, pm2 beats it
 
 exports.command = ['deploy [path]']
-exports.description = 'local deply'
+exports.description = 'deply a static directory quickly in local with zero config'
 exports.builder = yargs => {
     return yargs
         .options({
             path: {
-                description: 'serve path',
+                description: 'specify a static directory path to deploy',
                 type: 'string'
             },
             port: {
                 alias: 'p',
                 default: '8080',
-                description: 'specify port',
+                description: 'specify a port for the server',
                 type: 'string'
             },
             signal: {
                 alias: 's',
                 default: 'start',
-                description: 'specify a signal',
-                type: 'string'
-            },
-            id: {
-                description: 'specify an id',
+                description: 'specify a signal, valid slgnals include start,list,stop',
                 type: 'string'
             }
         })
