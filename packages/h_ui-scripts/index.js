@@ -74,7 +74,7 @@ module.exports = class Service {
         const arwen_env = this.arwen_env
         const webpackConfig = createWebpackConfig('production')
         const build = ora('Building for production, this is gonna take a while')
-        const pack = ora('Compressing into a zip file')
+        const zip = ora('Compressing into a zip file')
         const cb = function(err, stats) {
             if (err) {
                 build.fail('Build fail')
@@ -99,7 +99,7 @@ module.exports = class Service {
 
             build.succeed('Build succeed')
 
-            if (arwen_env.pack) {
+            if (arwen_env.zip) {
                 let packageName
 
                 if (arwen_env.packageName) {
@@ -108,7 +108,7 @@ module.exports = class Service {
                     packageName = fse.readJsonSync('./package.json').name
                 }
 
-                pack.start()
+                zip.start()
                 const output = fse.createWriteStream(`./${packageName}.${new Date().getTime()}.zip`)
                 const archive = archiver('zip', {
                     zlib: {
@@ -119,7 +119,7 @@ module.exports = class Service {
                 // listen for all archive data to be written
                 // 'close' event is fired only when a file descriptor is involved
                 output.on('close', function() {
-                    pack.succeed('Pack succeed')
+                    zip.succeed('Pack succeed')
                 })
 
                 // good practice to catch this error explicitly
