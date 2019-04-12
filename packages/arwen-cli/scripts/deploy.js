@@ -40,7 +40,7 @@ exports.builder = yargs => {
 
 exports.handler = function(argv) {
     // TODO: not just start, restart, stop, list, log(clean, tail)
-    // TODO: how to stop specified process
+    console.log()
     if (argv.signal === 'start') {
         if (argv.path) { // path must be set when start
             pm2.connect(function(err) {
