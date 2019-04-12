@@ -2,6 +2,7 @@
     "private": true,
     "main": "index.js",
     "scripts": {
+        "test:arwen": "node ./test/arwen.test.js",
         "test:create": "node ./test/create.test.js",
         "test:serve": "node ./test/serve.test.js",
         "test:build": "node ./test/build.test.js",
@@ -11,6 +12,7 @@
     "devDependencies": {
         "@arwen/arwen-utils": "^0.0.4",
         "jest": "^24.7.1",
-        "lerna": "^3.13.2"
+        "lerna": "^3.13.2",
+        "minimist": "^1.2.0"
     }
 }

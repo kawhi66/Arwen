@@ -10,11 +10,11 @@ yargs
     .command('$0', false, {}, function(argv) {
         console.log(logo)
         console.log(
-            `   Arwen has some interesting abilities that could be used for\n` +
-            `   project management of frontend. Typically, arwen now could completely\n` +
-            `   handle a vue project base on h_ui component library. Get started\n` +
-            `   with a simple command ${chalk.green('arwen create h_ui-demo')}\n\n` +
-            `   If you need more help, run ${chalk.green('arwen --help')}\n`
+            ` ${chalk.green('Arwen')} has some interesting abilities that could be used for project\n` +
+            ` management in front-end. Typically, arwen now could completely handle\n` +
+            ` a vue project based on ${chalk.green('h_ui')} component library\n\n` +
+            ` Get started with a simple command ${chalk.green('arwen create h_ui-demo')}\n` +
+            ` If you need more help, run ${chalk.green('arwen --help')}\n`
         )
     })
     .usage('Usage: arwen <command> [option]')
@@ -26,7 +26,7 @@ yargs
     .example('$0 build --pack --package-name h_ui-demo')
     .command(require('../scripts/deploy'))
     .example('$0 deploy ./build -p 8080')
-    .epilogue(`https://kawhi.site\n`)
+    .epilogue(` Issues and good ideas are both welcome, just put here ${chalk.cyan('https://github.com/kawhi66/arwen/issues')}`)
     .detectLocale(false)
     .wrap(120)
     .help()

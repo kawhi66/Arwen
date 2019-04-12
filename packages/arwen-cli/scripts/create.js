@@ -9,7 +9,7 @@ const {
 } = require('@arwen/arwen-utils')
 
 exports.command = ['create <name>', 'init']
-exports.description = 'generate the project based on template'
+exports.description = 'generate and initialize a new project based on h_ui template'
 exports.builder = function(yargs) {
     return yargs
         .option({

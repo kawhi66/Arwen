@@ -2,19 +2,19 @@ const verifyPkgConfig = require('../lib/verify.pkg')
 const requireRelative = require('../lib/require.relative')
 
 exports.command = ['serve', 'start', 'dev']
-exports.description = 'launch the server in development mode'
+exports.description = 'launch a server and serve the project in development mode'
 exports.builder = function(yargs) {
     return yargs
         .option('host', {
             alias: 'h',
             default: 'localhost',
-            description: 'specify host',
+            description: 'specify a host for the server',
             type: 'string'
         })
         .option('port', {
             alias: 'p',
             default: '3000',
-            description: 'specify port',
+            description: 'specify a port for the server',
             type: 'string'
         })
 }

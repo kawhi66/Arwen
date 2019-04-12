@@ -2,21 +2,21 @@ const verifyPkgConfig = require('../lib/verify.pkg')
 const requireRelative = require('../lib/require.relative')
 
 exports.command = ['build', 'release']
-exports.description = 'compile and build'
+exports.description = 'compile and optimized build in production mode'
 exports.builder = function(yargs) {
     return yargs
         .option('debug', {
             default: false,
-            description: 'turn on the source map in production',
+            description: 'switch on the source map in production',
             type: 'boolean'
         })
-        .option('pack', {
+        .option('zip', {
             default: false,
-            description: 'to zip file',
+            description: 'pack files in build directory into a zip file',
             type: 'boolean'
         })
         .option('package-name', {
-            description: 'specify zip package name',
+            description: 'specify package name for zip file',
             type: 'string'
         })
 }
