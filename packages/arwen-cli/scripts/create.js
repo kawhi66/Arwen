@@ -23,6 +23,8 @@ exports.builder = function(yargs) {
 }
 
 exports.handler = function(argv) {
+    console.log()
+
     const workDir = path.join(process.cwd(), argv.name)
     const step1 = ora(`Initializing the project ${chalk.green(argv.name)}`)
     const step2 = ora(`Installing development dependencies, this is gonna take a while`)
