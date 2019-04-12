@@ -1,6 +1,6 @@
 {
     "name": "@arwen/arwen-cli",
-    "version": "0.1.0-alpha.2",
+    "version": "0.1.0-alpha.3",
     "description": "arwen-cli",
     "main": "index.js",
     "bin": {
