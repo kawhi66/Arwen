@@ -32,7 +32,7 @@ module.exports = class Service {
     serve() {
         const webpackConfig = createWebpackConfig('development')
         const host = this.arwen_env.host
-        const launch = ora('The development server is launching, browser shoube open automatically')
+        const launch = ora('The development server is launching, browser should be open automatically')
 
         // find an available port
         portfinder.basePort = this.arwen_env.port
@@ -44,7 +44,7 @@ module.exports = class Service {
             webpackConfig.plugins.push(new FriendlyErrorsWebpackPlugin({
                 compilationSuccessInfo: {
                     messages: [`Your application is running here: http://${host}:${port}`],
-                    notes: [`Note that the development build is not optimized. To create a production build, run ${chalk.green('arwen build')}`]
+                    notes: [`The development build is not optimized. To create a production build, run ${chalk.green('arwen build')}`]
                 },
                 onErrors: function(severity, errors) {
                     // You can listen to errors transformed and prioritized by the plugin

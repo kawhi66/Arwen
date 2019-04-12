@@ -137,12 +137,12 @@ exports.handler = function(argv) {
             }
 
             if (argv.id) {
-                pm2.stop('argv.id', function(err, proc) {
+                pm2.stop(argv.id, function(err, proc) {
                     if (err) {
                         return console.error(err)
                     }
 
-                    pm2.delete('argv.id', function(err, proc) {
+                    pm2.delete(argv.id, function(err, proc) {
                         pm2.disconnect()
 
                         if (err) {
