@@ -10,7 +10,7 @@
     },
     "license": "ISC",
     "devDependencies": {
-        "@arwen/arwen-utils": "^0.0.4",
+        "@arwen/arwen-utils": "^0.1.0",
         "jest": "^24.7.1",
         "lerna": "^3.13.2",
         "minimist": "^1.2.0"
