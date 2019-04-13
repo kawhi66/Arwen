@@ -5,6 +5,12 @@
 Get started with a simple command `arwen create h_ui-demo`.  
 Need more help, try `arwen --help`.
 
+## Installation
+
+Prerequisites: Node.js (>=6.x, 8.x preferred), npm version 3+.
+
+     $ npm install -gd @arwen/arwen-cli
+
 ## Usage
 
 For now, [arwen](https://github.com/kawhi66/arwen) has 4 simple but powerful commands including `create` `serve` `build` `deploy`.
