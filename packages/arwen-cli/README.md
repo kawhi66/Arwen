@@ -7,7 +7,7 @@ Need more help, try `arwen --help`.
 
 ## Installation
 
-Prerequisites: Node.js (>=6.x, 8.x preferred), npm version 3+.
+Prerequisites: Node.js (>=10.x, 10.15.3 preferred), npm version 3+.
 
      $ npm install -gd @arwen/arwen-cli
 
