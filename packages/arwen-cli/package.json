@@ -6,7 +6,7 @@
     "bin": {
         "arwen": "./bin/arwen"
     },
-    "repository": "https://github.com/kawhi66/arwen",
+    "repository": "https://github.com/kawhi66/arwen/tree/master/packages/arwen-cli",
     "author": "kawhi.site",
     "license": "MIT",
     "dependencies": {
