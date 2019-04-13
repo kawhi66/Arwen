@@ -34,6 +34,10 @@ exports.builder = yargs => {
                 default: 'start',
                 description: 'specify a signal, valid slgnals include start,list,stop',
                 type: 'string'
+            },
+            'app-id': {
+                description: 'specify an app id running in local',
+                type: 'string'
             }
         })
 }
@@ -132,13 +136,15 @@ exports.handler = function(argv) {
                 return console.error(err)
             }
 
-            if (argv.id) {
-                pm2.stop(argv.id, function(err, proc) {
+            if (argv.appId) {
+                pm2.stop(argv.appId, function(err, proc) {
                     if (err) {
-                        return console.error(err)
+                        console.error(err)
+                        pm2.disconnect()
+                        return false
                     }
 
-                    pm2.delete(argv.id, function(err, proc) {
+                    pm2.delete(argv.appId, function(err, proc) {
                         pm2.disconnect()
 
                         if (err) {
@@ -165,7 +171,7 @@ exports.handler = function(argv) {
                         })
                     } else {
                         pm2.disconnect()
-                        ora(`If you have trouble getting id, running ${chalk.green('arwen deploy -s list')} to get more detail infomation.\n`).info()
+                        ora(`If you have trouble getting app id, running ${chalk.green('arwen deploy -s list')} to get more detail infomation.\n`).info()
                     }
                 })
             }
