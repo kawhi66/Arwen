@@ -84,9 +84,9 @@ exports.handler = function(argv) {
                             stdio: 'ignore'
                         })
                     } else {
-                        child = ok ? spawn('yarn', ['add', '--dev', '@arwen/h_ui-scripts', '--registry', 'http://registry.npm.taobao.org'], {
+                        child = ok ? spawn('yarn', ['add', '--dev', '@arwen/h_ui-scripts@latest', '--registry', 'http://registry.npm.taobao.org'], {
                             stdio: 'ignore'
-                        }) : spawn('npm', ['install', '-d', '--save-dev', '@arwen/h_ui-scripts', '--registry', 'http://registry.npm.taobao.org'], {
+                        }) : spawn('npm', ['install', '--save-dev', '@arwen/h_ui-scripts@latest', '--registry', 'http://registry.npm.taobao.org'], {
                             stdio: 'ignore'
                         })
                     }
@@ -95,8 +95,8 @@ exports.handler = function(argv) {
                         reject(err)
                     })
 
-                    child.on('close', function(code) {
-                        if (code !== 0) return reject()
+                    child.on('close', function(code, signal) {
+                        if (code !== 0) return reject(`Sorry, you just triggered an unknown error, ${chalk.red('the exit code is ' + code + ', the signal is ' + signal)}, please report this to ${chalk.cyan('https://github.com/kawhi66/arwen/issues')}, I will try to fix it ASAP.`)
                         resolve()
                     })
                 })
@@ -129,7 +129,7 @@ exports.handler = function(argv) {
                         })
 
                         child.on('close', function(code) {
-                            if (code !== 0) return reject()
+                            if (code !== 0) return reject(`Sorry, you just triggered an unknown error, ${chalk.red('the exit code is ' + code + ', the signal is ' + signal)}, please report this to ${chalk.cyan('https://github.com/kawhi66/arwen/issues')}, I will try to fix it ASAP.`)
                             resolve()
                         })
                     })
