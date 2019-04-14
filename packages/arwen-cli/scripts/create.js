@@ -29,8 +29,8 @@ exports.handler = function(argv) {
     const step1 = ora(`Initializing the project ${chalk.green(argv.name)}`)
     const step2 = ora(`Installing development dependencies, this is gonna take a while`)
     const step3 = ora('Loading template files')
-    const step4 = ora('Installing runtime dependencies')
-    const step5 = ora(`Project ${chalk.green(argv.name)} creation succeed\n`)
+    const step4 = ora('Installing runtime dependencies, this is gonna take a while')
+    const step5 = ora(`Creation succeed\n`)
     let whereami = step1
 
     fse.pathExists(workDir)
@@ -62,6 +62,7 @@ exports.handler = function(argv) {
             step1.start()
             fse.ensureDir(workDir).then(() => {
                 process.chdir(workDir)
+                process.env.SASS_BINARY_SITE = 'https://cdn.npm.taobao.org/dist/node-sass' // use cnpm binary for node-sass
 
                 return fse.writeJson('./package.json', {
                     name: argv.name,
@@ -100,7 +101,7 @@ exports.handler = function(argv) {
                     })
                 })
             }).then(() => {
-                step2.succeed() && step3.start()
+                step2.succeed('Installing development dependencies') && step3.start()
                 whereami = step3
                 return fse.copy(path.join(workDir, 'node_modules', '@arwen/h_ui-scripts', 'template'), workDir)
             }).then(() => {
@@ -134,7 +135,7 @@ exports.handler = function(argv) {
                     })
                 })
             }).then(() => {
-                step4.succeed()
+                step4.succeed('Installing runtime dependencies')
                 try {
                     fse.remove('./pkgConfig.json')
                 } catch (e) {} finally {
