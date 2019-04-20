@@ -10,6 +10,7 @@
     "author": "kawhi.site",
     "license": "MIT",
     "dependencies": {
+        "@arwen/arwen-deploy": "^0.0.1",
         "@arwen/arwen-utils": "^0.1.0",
         "compression": "^1.7.4",
         "express": "^4.16.4",
