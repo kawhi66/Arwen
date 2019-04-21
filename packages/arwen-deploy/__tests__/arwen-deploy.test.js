@@ -1,10 +1,10 @@
 'use strict';
 const path = require('path')
-const arwenDeploy = require('..')
+const remoteDeploy = require('..').remoteDeploy
 
 // jest.setTimeout(20000)
 test('@arwen/arwen-deploy', () => {
-    return arwenDeploy({
+    return remoteDeploy({
         auth: {
             host: '192.168.39.31',
             username: 'kawhi',

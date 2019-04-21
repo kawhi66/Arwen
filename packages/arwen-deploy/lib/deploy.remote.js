@@ -7,6 +7,7 @@ const Client = require('ssh2').Client
 const tv4 = require('tv4')
 const glob = require('glob')
 
+// TODO: config.localFiles can't be an array
 // TODO: logs
 module.exports = remoteDeploy
 
