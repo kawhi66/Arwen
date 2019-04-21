@@ -10,7 +10,7 @@ const stop = require('@arwen/arwen-deploy').localStop
 // WARNING: but I need it work well in DaemonMode with nodejs API,
 // WARNING: obviously, pm2 beats it
 
-exports.command = ['deploy <path>']
+exports.command = ['deploy [path]']
 exports.description = 'deply a static directory quickly in local with zero config'
 exports.builder = yargs => {
     return yargs
@@ -58,32 +58,7 @@ exports.handler = function(argv) {
         list()
             .then(function(apps) {
                 if (apps.length) {
-                    const appInfos = apps.map(app => {
-                        const {
-                            name,
-                            pid,
-                            pm2_env: {
-                                ARWEN_DEPLOY_PATH,
-                                ARWEN_DEPLOY_PORT,
-                                pm_id,
-                                status,
-                                created_at
-                            }
-                        } = app
-
-                        return {
-                            name,
-                            id: pm_id,
-                            pid,
-                            status,
-                            path: ARWEN_DEPLOY_PATH,
-                            port: ARWEN_DEPLOY_PORT,
-                            status,
-                            created_at
-                        }
-                    })
-
-                    console.table(appInfos)
+                    console.table(apps)
                 } else {
                     ora(`There are not apps deployed locally. If you need help, try ${chalk.green('arwen deploy --help')}.\n`).info()
                 }
