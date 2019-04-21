@@ -1,25 +1,69 @@
-const spawn = require('@arwen/arwen-utils').spawn
-const minimist = require('minimist')
-const rawArgs = process.argv.slice(2)
-const args = minimist(rawArgs)
+const {
+    spawn
+} = require('@arwen/arwen-utils')
 
 test('arwen', () => {
-    return new Promise(function(resolve, reject) {
-        const child = spawn('node', [ARWEN], {
-            stdio: 'inherit'
-        })
+    spawn('node', [ARWEN], {
+        stdio: 'inherit'
+    })
+})
 
-        child.on('close', function(code, signal) {
-            if (code !== 0) {
-                console.error(`exit with code ${code}`)
-                console.error(`exit with signal ${signal}`)
-                reject(code)
-            } else resolve()
-        })
+test('help', () => {
+    spawn('node', [ARWEN, '--help'], {
+        stdio: 'inherit'
+    })
+})
 
-        child.on('error', function(err) {
-            err && console.error(err)
-            reject(err)
-        })
+test('create', () => {
+    spawn('node', [ARWEN, 'create', TEST_PROJECT], {
+        cwd: TEST_DIR,
+        env: {
+            ARWEN_ENV: 'development',
+            ...process.env
+        },
+        stdio: 'inherit'
+    })
+})
+
+test('build', () => {
+    spawn('node', [ARWEN, 'build'], {
+        cwd: `${TEST_DIR}/${TEST_PROJECT}`,
+        env: {
+            ARWEN_ENV: 'development',
+            ...process.env
+        },
+        stdio: 'inherit'
+    })
+})
+
+test('deploy', () => {
+    spawn('node', [ARWEN, 'deploy', `./build`], {
+        cwd: `${TEST_DIR}/${TEST_PROJECT}`,
+        stdio: 'inherit'
+    })
+})
+
+test('list', () => {
+    spawn('node', [ARWEN, 'deploy', '-s', 'list'], {
+        stdio: 'inherit'
+    })
+})
+
+test('stop-0', () => {
+    spawn('node', [ARWEN, 'deploy', '-s', 'stop', '--app-id', '0'], {
+        stdio: 'inherit'
+    })
+})
+
+test('stop-all', () => {
+    spawn('node', [ARWEN, 'deploy', '-s', 'stop'], {
+        stdio: 'inherit'
+    })
+})
+
+test('push', () => {
+    spawn('node', [ARWEN, 'push', 'development'], {
+        cwd: `${TEST_DIR}/${TEST_PROJECT}`,
+        stdio: 'inherit'
     })
 })
