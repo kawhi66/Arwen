@@ -1,12 +1,16 @@
+const install = require('../lib/install.pkg.js')
 const path = require('path')
-const useYarn = require('../lib/use.yarn.js')
 const {
     chalk,
-    fse,
+    fse: fs,
     inquirer,
     ora,
     spawn
 } = require('@arwen/arwen-utils')
+
+const defaultSpawnConfig = {
+    stdio: 'ignore'
+}
 
 exports.command = ['create <name>', 'init']
 exports.description = 'generate and initialize a new project based on h_ui template'
@@ -25,7 +29,7 @@ exports.builder = function(yargs) {
 exports.handler = function(argv) {
     console.log()
 
-    const workDir = path.join(process.cwd(), argv.name)
+    const projectDir = path.join(process.cwd(), argv.name)
     const step1 = ora(`Initializing the project ${chalk.green(argv.name)}`)
     const step2 = ora(`Installing development dependencies, this is gonna take a while`)
     const step3 = ora('Loading template files')
@@ -33,7 +37,7 @@ exports.handler = function(argv) {
     const step5 = ora(`Creation succeed\n`)
     let whereami = step1
 
-    fse.pathExists(workDir)
+    fs.pathExists(projectDir)
         .then(function(exists) {
             if (exists) {
                 return new Promise(function(resolve, reject) {
@@ -45,7 +49,7 @@ exports.handler = function(argv) {
                     }]).then(answers => {
                         if (answers.overwrite) {
                             console.log()
-                            fse.emptyDirSync(workDir)
+                            fs.emptyDirSync(projectDir)
                             return resolve()
                         } else {
                             ora(`Project ${chalk.green(argv.name)} creation failed. Please try other project names.\n`).fail()
@@ -57,87 +61,64 @@ exports.handler = function(argv) {
                 return Promise.resolve()
             }
         })
-        .then(useYarn)
-        .then(ok => {
+        .then(() => {
             step1.start()
-            fse.ensureDir(workDir).then(() => {
-                process.chdir(workDir)
-                process.env.SASS_BINARY_SITE = 'https://cdn.npm.taobao.org/dist/node-sass' // use cnpm binary for node-sass
-
-                return fse.writeJson('./package.json', {
+            fs.ensureDir(projectDir).then(() => {
+                process.chdir(projectDir)
+                return fs.writeJson('./package.json', {
                     name: argv.name,
-                    version: "0.0.1",
-                    arwen: {
-                        type: 'h_ui'
-                    }
+                    version: "0.0.1"
                 }, {
                     spaces: '\t'
                 })
             }).then(() => {
                 step1.succeed() && step2.start()
                 whereami = step2
-                return new Promise((resolve, reject) => {
-                    let child
-
-                    if (process.env.ARWEN_ENV === 'development') {
-                        child = spawn('yarn', ['link', '@arwen/h_ui-scripts'], {
-                            stdio: 'ignore'
+                if (process.env.ARWEN_ENV === 'development') {
+                    return new Promise(function(resolve, reject) {
+                        const child = spawn('yarn', ['link', '@arwen/h_ui-scripts'], defaultSpawnConfig)
+                        child.on('error', reject)
+                        child.on('close', function(code, signal) {
+                            if (code !== 0) return reject(`${code} ${signal}`)
+                            resolve()
                         })
-                    } else {
-                        child = ok ? spawn('yarn', ['add', '--dev', '@arwen/h_ui-scripts@latest', '--registry', 'http://registry.npm.taobao.org'], {
-                            stdio: 'ignore'
-                        }) : spawn('npm', ['install', '--save-dev', '@arwen/h_ui-scripts@latest', '--registry', 'http://registry.npm.taobao.org'], {
-                            stdio: 'ignore'
-                        })
-                    }
-
-                    child.on('error', function(err) {
-                        reject(err)
                     })
-
-                    child.on('close', function(code, signal) {
-                        if (code !== 0) return reject(`Sorry, you just triggered an unknown error, ${chalk.red('the exit code is ' + code + ', the signal is ' + signal)}, please report this to ${chalk.cyan('https://github.com/kawhi66/arwen/issues')}, I will try to fix it ASAP.`)
-                        resolve()
-                    })
-                })
+                } else {
+                    return install('@arwen/h_ui-scripts', true)
+                }
             }).then(() => {
                 step2.succeed('Installing development dependencies') && step3.start()
                 whereami = step3
-                return fse.copy(path.join(workDir, 'node_modules', '@arwen/h_ui-scripts', 'template'), workDir)
+                return fs.copy(path.join(projectDir, 'node_modules', '@arwen/h_ui-scripts', 'template'), projectDir)
             }).then(() => {
                 step3.succeed() && step4.start()
                 whereami = step4
                 return new Promise(function(resolve, reject) {
-                    fse.readJson('./pkgConfig.json', function(err, pkgConfig) {
-                        if (err) {
-                            return resolve()
+                    fs.readJson('./pkgConfig.json', function(err, pkgConfig) {
+                        if (err) return resolve()
+
+                        if (pkgConfig.arwen) {
+                            fs.writeJsonSync('./package.json', Object.assign(fs.readJsonSync('./package.json'), {
+                                arwen: pkgConfig.arwen
+                            }), {
+                                spaces: '\t'
+                            })
                         }
 
-                        // WARNING: pkgConfig's dependencies should have explicit version, not version range
-                        const pkgDeps = Object.keys(pkgConfig.dependencies).map(function(key) {
-                            return `${key}@${pkgConfig.dependencies[key]}`
-                        })
+                        if (pkgConfig.dependencies) {
+                            // WARNING: pkgConfig's dependencies should have explicit version, not version range
+                            const pkgDeps = Object.keys(pkgConfig.dependencies).map(function(key) {
+                                return `${key}@${pkgConfig.dependencies[key]}`
+                            })
 
-                        const child = ok ? spawn('yarn', ['add'].concat(pkgDeps).concat(['--registry', 'http://registry.npm.taobao.org']), {
-                            stdio: 'ignore'
-                        }) : spawn('npm', ['install'].concat(pkgDeps).concat(['--registry', 'http://registry.npm.taobao.org']), {
-                            stdio: 'ignore'
-                        })
-
-                        child.on('error', function(err) {
-                            reject(err)
-                        })
-
-                        child.on('close', function(code) {
-                            if (code !== 0) return reject(`Sorry, you just triggered an unknown error, ${chalk.red('the exit code is ' + code + ', the signal is ' + signal)}, please report this to ${chalk.cyan('https://github.com/kawhi66/arwen/issues')}, I will try to fix it ASAP.`)
-                            resolve()
-                        })
+                            install(pkgDeps).then(resolve).catch(reject)
+                        } else resolve()
                     })
                 })
             }).then(() => {
                 step4.succeed('Installing runtime dependencies')
                 try {
-                    fse.remove('./pkgConfig.json')
+                    fs.remove('./pkgConfig.json')
                 } catch (e) {} finally {
                     step5.succeed()
                 }
@@ -145,10 +126,11 @@ exports.handler = function(argv) {
                 whereami.fail()
 
                 console.log()
-                console.error(err)
+                err && console.error(err)
             })
         })
         .catch(function(err) {
+            console.log()
             err && console.error(err)
         })
 }
