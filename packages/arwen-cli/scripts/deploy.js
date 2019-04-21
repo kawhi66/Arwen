@@ -1,10 +1,10 @@
 const chalk = require('@arwen/arwen-utils').chalk
+const inquirer = require('@arwen/arwen-utils').inquirer
 const ora = require('@arwen/arwen-utils').ora
 const ErrorHandler = require('@arwen/arwen-utils').ErrorHandler
 const deploy = require('@arwen/arwen-deploy').localDeploy
 const list = require('@arwen/arwen-deploy').localList
 const stop = require('@arwen/arwen-deploy').localStop
-const inquirer = require('inquirer')
 
 // WARNING: there are many problems with forever, maybe it's better in cli,
 // WARNING: but I need it work well in DaemonMode with nodejs API,

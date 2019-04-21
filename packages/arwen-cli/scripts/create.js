@@ -1,9 +1,9 @@
-const inquirer = require('inquirer')
 const path = require('path')
 const useYarn = require('../lib/use.yarn.js')
 const {
     chalk,
     fse,
+    inquirer,
     ora,
     spawn
 } = require('@arwen/arwen-utils')
