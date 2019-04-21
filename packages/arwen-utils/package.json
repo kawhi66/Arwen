@@ -10,6 +10,7 @@
     "chalk": "^2.4.2",
     "cross-spawn": "^6.0.5",
     "fs-extra": "^7.0.1",
+    "inquirer": "^6.3.1",
     "merge": "^1.2.1",
     "ora": "^3.4.0",
     "react-dev-utils": "^8.0.0",
