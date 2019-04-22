@@ -9,10 +9,10 @@
                     "username": "kawhi",
                     "password": "kawhi"
                 },
-                "localFiles": "./build",
+                "localFiles": "./build/**/*",
                 "remotePath": "/home/kawhi/testtest",
-                "preDeploy": [],
-                "postDeploy": [],
+                "prePush": ["rm -rf testtest"],
+                "postPush": ["ls -l ./testtest"],
                 "silent": false
             }
         }
