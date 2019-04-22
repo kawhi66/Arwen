@@ -23,7 +23,7 @@ exports.handler = function(argv) {
 
     deploy(envConfig)
         .then(function() {
-            console.log('deploy succeed\n')
+            console.log('Push succeed\n')
         })
         .catch(function(err) {
             console.error(err)
