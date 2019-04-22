@@ -1,6 +1,6 @@
 const {
     ErrorHandler,
-    fse
+    fse: fs
 } = require('@arwen/arwen-utils')
 
 /**
@@ -12,9 +12,9 @@ module.exports = function(argv) {
     return new Promise((resolve, reject) => {
         const pkgPath = './package.json'
 
-        fse.pathExists(pkgPath).then(function(exists) {
+        fs.pathExists(pkgPath).then(function(exists) {
             if (exists) {
-                fse.readJson(pkgPath).then(function(pkgConfig) {
+                fs.readJson(pkgPath).then(function(pkgConfig) {
                     if (pkgConfig.arwen && pkgConfig.arwen.type) {
                         return resolve(Object.assign({}, pkgConfig.arwen, argv))
                     } else {

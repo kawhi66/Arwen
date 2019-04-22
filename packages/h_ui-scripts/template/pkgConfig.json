@@ -1,4 +1,22 @@
 {
+    "arwen": {
+        "type": "h_ui",
+        "push_env": {
+            "development": {
+                "auth": {
+                    "host": "192.168.39.31",
+                    "port": "22",
+                    "username": "kawhi",
+                    "password": "kawhi"
+                },
+                "localFiles": "./build/**/*",
+                "remotePath": "/home/kawhi/testtest",
+                "prePush": ["rm -rf testtest"],
+                "postPush": ["ls -l ./testtest"],
+                "silent": false
+            }
+        }
+    },
     "dependencies": {
         "axios": "0.17.1",
         "echarts": "4.0.4",

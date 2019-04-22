@@ -1,12 +1,16 @@
 'use strict';
 
-const path = require('path')
-const promisify = require('util').promisify
 const chalk = require('@arwen/arwen-utils').chalk
 const Client = require('ssh2').Client
-const tv4 = require('tv4')
 const glob = require('glob')
+const log = require('@arwen/arwen-utils').log
+const path = require('path')
+const promisify = require('util').promisify
+const tv4 = require('tv4')
 
+let keepSilent = false
+
+// TODO: config.localFiles can't be an array
 // TODO: logs
 module.exports = remoteDeploy
 
@@ -37,15 +41,15 @@ function remoteDeploy(config) {
                         $ref: 'authSchema'
                     },
                     localFiles: {
-                        type: ['string', 'array']
+                        type: 'string' // 暂时先不支持数组形式的 localFiles
                     },
                     remotePath: {
                         type: 'string'
                     },
-                    preDeploy: {
+                    prePush: {
                         type: ['string', 'array']
                     },
-                    postDeploy: {
+                    postPush: {
                         type: ['string', 'array']
                     },
                     silent: {
@@ -54,18 +58,17 @@ function remoteDeploy(config) {
                 }
             })) {
             return reject(`Something wrong with the config, ${chalk.red(tv4.error.message)}`)
-        }
+        } else keepSilent = config.silent;
+
+        !keepSilent && log.info(`Connecting to ${chalk.green(config.auth.host + ":" + config.auth.port)}`)
 
         const sshClient = new Client()
-        const auth = Object.assign({
-            port: 22
-        }, config.auth)
-
         sshClient.on('ready', async function() {
             try {
-                // executing predeploy commmands
-                if (config.preDeploy && config.preDeploy.length > 0) {
-                    for (const command of config.preDeploy) {
+                // executing prePush commmands
+                if (config.prePush && config.prePush.length > 0) {
+                    for (const command of config.prePush) {
+                        !keepSilent && log.info(`Running command ${chalk.green(command)} before push`)
                         await execCommand(sshClient, command)
                     }
                 }
@@ -74,13 +77,16 @@ function remoteDeploy(config) {
                 if (config.localFiles && config.remotePath) {
                     const filePaths = await resolveFilePaths(config.localFiles, config.remotePath)
                     if (filePaths.length > 0) {
-                        await copy(sshClient, filePaths)
+                        !keepSilent && log.info(`Pushing to ${chalk.green(config.remotePath)}`)
+                        await copy(sshClient, filePaths);
+                        !keepSilent && log.info(`Push succeed`)
                     }
                 }
 
-                // executing postdeploy commands
-                if (config.postDeploy && config.postDeploy.length > 0) {
-                    for (const command of config.postDeploy) {
+                // executing postPush commands
+                if (config.postPush && config.postPush.length > 0) {
+                    for (const command of config.postPush) {
+                        !keepSilent && log.info(`Running command ${chalk.green(command)} after push`)
                         await execCommand(sshClient, command)
                     }
                 }
@@ -89,15 +95,19 @@ function remoteDeploy(config) {
             } catch (error) {
                 reject(error)
             } finally {
+                !keepSilent && log.info(`Closing connection to ${chalk.green(config.auth.host + ":" + config.auth.port)}`)
                 sshClient.end()
             }
         })
 
         sshClient.on('error', error => {
+            !keepSilent && log.error(`Connect to ${chalk.green(config.auth.host + ":" + config.auth.port)} failed`)
             reject(error)
         })
 
-        sshClient.connect(auth)
+        sshClient.connect(Object.assign({
+            port: 22
+        }, config.auth))
     })
 }
 
@@ -116,7 +126,7 @@ function execCommand(sshClient, command) {
             })
 
             stream.on('data', function(data) {
-                console.log(data.toString())
+                log(data.toString())
             })
 
             stream.stderr.on('data', function(data) {
@@ -160,6 +170,12 @@ function copy(sshClient, filePaths) {
 
             try {
                 for (const filePath of filePaths) {
+                    const pathDescriptor = path.parse(filePath.remotePath)
+                    if (pathDescriptor.name == '' || pathDescriptor.ext == '') { // 过滤掉对目录的处理
+                        continue
+                    }
+
+                    !keepSilent && log.info(`Pushing ${filePath.localPath}`)
                     await ensureDir(path.dirname(filePath.remotePath))
                     await copyFile.call(sftp, filePath.localPath, filePath.remotePath)
                 }
@@ -174,28 +190,17 @@ function copy(sshClient, filePaths) {
 
 function resolveFilePaths(localFiles, remotePath) {
     return new Promise(function(resolve, reject) {
-        if (typeof localFiles === 'string') {
-            glob(localFiles, {
-                absolute: true
-            }, function(error, files) {
-                if (error) return reject(error)
+        glob(localFiles, {}, function(error, files) {
+            if (error) return reject(error)
 
-                const slashIndex = getLastCommonSlashIndex(files)
-                resolve(files.map(function(filePath) {
-                    return {
-                        localPath: filePath,
-                        remotePath: remotePath + filePath.substring(slashIndex)
-                    }
-                }))
-            })
-        } else {
-            resolve(localFiles.map(function(filePath) {
+            const slashIndex = getLastCommonSlashIndex(files)
+            resolve(files.map(function(filePath) {
                 return {
-                    localPath: path.resolve(filePath),
-                    remotePath: remotePath + '/' + path.basename(filePath)
+                    localPath: filePath,
+                    remotePath: remotePath + filePath.substring(slashIndex)
                 }
             }))
-        }
+        })
     })
 }
 

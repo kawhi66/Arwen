@@ -33,7 +33,7 @@ function localList() {
                             path: ARWEN_DEPLOY_PATH,
                             port: ARWEN_DEPLOY_PORT,
                             status,
-                            created_at
+                            created_at: new Date(created_at)
                         }
                     })
 
