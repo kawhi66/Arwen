@@ -1,6 +1,6 @@
 {
   "name": "@arwen/arwen-deploy",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "deploy handler for arwen",
   "keywords": [
     "arwen",
@@ -31,7 +31,7 @@
     "url": "https://github.com/kawhi66/arwen/issues"
   },
   "dependencies": {
-    "@arwen/arwen-utils": "^0.1.0",
+    "@arwen/arwen-utils": "^0.1.1",
     "compression": "^1.7.4",
     "express": "^4.16.4",
     "glob": "^7.1.3",

@@ -1,6 +1,6 @@
 {
   "name": "@arwen/arwen-utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "arwen-utils",
   "main": "index.js",
   "repository": "https://github.com/kawhi66/arwen",
