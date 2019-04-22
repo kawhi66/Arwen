@@ -13,7 +13,7 @@ Prerequisites: Node.js (>=10.x, 10.15.3 preferred), npm version 3+.
 
 ## Usage
 
-For now, [arwen](https://github.com/kawhi66/arwen) has 4 simple but powerful commands including `create` `serve` `build` `deploy`.
+For now, [arwen](https://github.com/kawhi66/arwen) has 5 simple but powerful commands including `create` `serve` `build` `deploy` `push`.
 
 `arwen create h_ui-demo`
 
@@ -70,5 +70,33 @@ The process management by [arwen](https://github.com/kawhi66/arwen) is through t
 ```
 
 Column **Id** could be used for `arwen deploy -s stop --app-id 0` command. And please note that, specifying an explicit app id is highly recommended, if not, all apps running locally will be destroyed.
+
+`arwen push development`
+
+Besides deploy in local, deploy in remote server is more common. `arwen push <env>` allows you pushing static files to a specified remote environment by ssh. The environment is configured in \`package.json' like shown below.
+
+```javascript
+"arwen": {
+  "type": "h_ui",
+  "push_env": {
+    // you could specify multiple remote environment
+    "development": {
+      // example SSH authentication object. For more auth options look
+      // here: https://github.com/mscdex/ssh2#client-methods
+      "auth": {
+        "host": "192.168.39.31", // hostname or IP address
+        "port": "22", // by default is set to 22
+        "username": "kawhi",
+        "password": "kawhi"
+      },
+      "localFiles": "./build/**/*", // glob string
+      "remotePath": "/home/kawhi/testtest", // path on remote server
+      "prePush": ["rm -rf testtest"], // array of commands to be executed on remote server before files push
+      "postPush": ["ls -l ./testtest"], // array of commands to be executed on remote server after files push
+      "silent": true // disable logging to console, by default is set to false
+    }
+  }
+}
+```
 
 That's all for now, issues and good ideas are both welcomed, just put here <https://github.com/kawhi66/arwen/issues>
