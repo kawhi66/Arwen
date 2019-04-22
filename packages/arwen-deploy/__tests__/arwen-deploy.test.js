@@ -10,8 +10,8 @@ test('@arwen/arwen-deploy', () => {
             username: 'kawhi',
             password: 'kawhi'
         },
-        localFiles: [path.resolve(__dirname, './abc/test.md')],
-        remotePath: '/home/kawhi/testtest',
+        localFiles: path.resolve(__dirname, './abc/**/*'),
+        remotePath: '/home/kawhi/testabc',
         silent: true
     }).then(result => {
         console.log('deploy succeed')
