@@ -38,7 +38,7 @@ function remoteDeploy(config) {
                         $ref: 'authSchema'
                     },
                     localFiles: {
-                        type: ['string', 'array']
+                        type: 'string' // 暂时先不支持数组形式的 localFiles
                     },
                     remotePath: {
                         type: 'string'
@@ -161,6 +161,11 @@ function copy(sshClient, filePaths) {
 
             try {
                 for (const filePath of filePaths) {
+                    const pathDescriptor = path.parse(filePath.remotePath)
+                    if (pathDescriptor.name == '' || pathDescriptor.ext == '') { // 过滤掉对目录的处理
+                        continue
+                    }
+
                     await ensureDir(path.dirname(filePath.remotePath))
                     await copyFile.call(sftp, filePath.localPath, filePath.remotePath)
                 }
@@ -175,28 +180,17 @@ function copy(sshClient, filePaths) {
 
 function resolveFilePaths(localFiles, remotePath) {
     return new Promise(function(resolve, reject) {
-        if (typeof localFiles === 'string') {
-            glob(localFiles, {
-                absolute: true
-            }, function(error, files) {
-                if (error) return reject(error)
+        glob(localFiles, {}, function(error, files) {
+            if (error) return reject(error)
 
-                const slashIndex = getLastCommonSlashIndex(files)
-                resolve(files.map(function(filePath) {
-                    return {
-                        localPath: filePath,
-                        remotePath: remotePath + filePath.substring(slashIndex)
-                    }
-                }))
-            })
-        } else {
-            resolve(localFiles.map(function(filePath) {
+            const slashIndex = getLastCommonSlashIndex(files)
+            resolve(files.map(function(filePath) {
                 return {
-                    localPath: path.resolve(filePath),
-                    remotePath: remotePath + '/' + path.basename(filePath)
+                    localPath: filePath,
+                    remotePath: remotePath + filePath.substring(slashIndex)
                 }
             }))
-        }
+        })
     })
 }
 
