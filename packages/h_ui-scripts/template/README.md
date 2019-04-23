@@ -73,7 +73,7 @@ Column **Id** could be used for `arwen deploy -s stop --app-id 0` command. And p
 
 `arwen push development`
 
-Besides deploy in local, deploy in remote server is more common. `arwen push <env>` allows you pushing static files to a specified remote environment by ssh. The environment is configured in \`package.json' like shown below.
+Besides deploy in local, deploy in remote server is more common. `arwen push <env>` allows you pushing static files to a specified remote environment by ssh. The environment is configured in `package.json` like shown below.
 
 ```javascript
 "arwen": {
