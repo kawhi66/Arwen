@@ -1,35 +1,32 @@
 #!/usr/bin/env node
 
-const logo = require('../lib/logo')
-const yargs = require('yargs')
-const {
-    chalk
-} = require('@arwen/arwen-utils')
+const { chalk } = require("@arwen/arwen-utils");
+const logo = require("../lib/logo");
+const yargs = require("yargs");
 
 yargs
-    .command('$0', false, {}, function(argv) {
-        console.log(logo)
-        console.log(
-            ` ${chalk.green('Arwen')} has some interesting abilities that could be used for project\n` +
-            ` management in front-end. Typically, arwen now could completely handle\n` +
-            ` a vue project based on ${chalk.green('h_ui')} component library\n\n` +
-            ` Get started with a simple command ${chalk.green('arwen create h_ui-demo')}\n` +
-            ` If you need more help, run ${chalk.green('arwen --help')}\n`
-        )
-    })
-    .command(require('../scripts/create'))
-    .command(require('../scripts/serve'))
-    .command(require('../scripts/build'))
-    .command(require('../scripts/deploy'))
-    .command(require('../scripts/push'))
-    .usage('Usage: arwen <command> [option]')
-    .example('$0 create h_ui-demo')
-    .example('$0 serve -h 127.0.0.1 -p 8080')
-    .example('$0 build --zip --package-name h_ui-demo')
-    .example('$0 deploy ./build -p 8080')
-    .example('$0 push production')
-    .epilogue(` Issues and good ideas are both welcomed, just put here ${chalk.cyan('https://github.com/kawhi66/arwen/issues')}`)
-    .detectLocale(false)
-    .wrap(120)
-    .help()
-    .argv
+  .command("$0", false, {}, function(argv) {
+    console.log(logo);
+    console.log(
+      ` ${chalk.green("Arwen")} has some interesting abilities that could be used for project\n` +
+        ` management in front-end. Typically, arwen now could completely handle\n` +
+        ` a vue project based on ${chalk.green("h_ui")} component library\n\n` +
+        ` Get started with a simple command ${chalk.green("arwen create h_ui-demo")}\n` +
+        ` If you need more help, run ${chalk.green("arwen --help")}\n`
+    );
+  })
+  .command(require("../scripts/create"))
+  .command(require("../scripts/serve"))
+  .command(require("../scripts/build"))
+  .command(require("../scripts/deploy"))
+  .command(require("../scripts/push"))
+  .usage("Usage: arwen <command> [option]")
+  .example("$0 create h_ui-demo")
+  .example("$0 serve -h 127.0.0.1 -p 8080")
+  .example("$0 build --zip --package-name h_ui-demo")
+  .example("$0 deploy ./build -p 8080")
+  .example("$0 push production")
+  .epilogue(` Issues and good ideas are both welcomed, just put here ${chalk.cyan("https://github.com/kawhi66/arwen/issues")}`)
+  .detectLocale(false)
+  .wrap(120)
+  .help().argv;

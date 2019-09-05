@@ -2,11 +2,6 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "test:arwen": "node ./test/arwen.test.js",
-    "test:create": "node ./test/create.test.js",
-    "test:serve": "node ./test/serve.test.js",
-    "test:build": "node ./test/build.test.js",
-    "test:deploy": "node ./test/deploy.test.js",
     "test": "jest"
   },
   "license": "ISC",

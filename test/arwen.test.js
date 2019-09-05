@@ -18,7 +18,7 @@ test('create', () => {
     spawn('node', [ARWEN, 'create', TEST_PROJECT], {
         cwd: TEST_DIR,
         env: {
-            ARWEN_ENV: 'development',
+            ARWEN_ENV: 'production',
             ...process.env
         },
         stdio: 'inherit'
